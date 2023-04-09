@@ -84,6 +84,7 @@ export class CS_InventoryUI extends CS_Inventory {
             item: { type, model },
             team
         });
+        const isGlove = type === "glove";
         if (item && CS_Inventory.isWithinLocktime(item.locktime)) {
             return [
                 CS_Economy.find({
@@ -96,9 +97,8 @@ export class CS_InventoryUI extends CS_Inventory {
             ];
         }
         return CS_Economy.filter({
-            base: model ? undefined : true,
+            base: model && !isGlove ? undefined : model && isGlove ? false : true,
             category,
-            free: model && type === "glove" ? false : undefined,
             model,
             team,
             type
