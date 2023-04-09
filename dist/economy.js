@@ -8,48 +8,47 @@ function filterItems(predicate) {
             compare(predicate.free, item.free) &&
             compare(predicate.model, item.model) &&
             compare(predicate.base, item.base) &&
+            compare(predicate.category, item.category) &&
             (predicate.team === undefined ||
-                predicate.teams === undefined ||
-                predicate.teams.includes(predicate.team)));
+                item.teams === undefined ||
+                item.teams.includes(predicate.team)));
     };
 }
-export var CS_Economy = /** @class */ (function () {
-    function CS_Economy() {
-    }
-    CS_Economy.setItems = function (items) {
+class CS_Economy {
+    static items = [];
+    static itemsDef = [];
+    static itemsMap = new Map();
+    static itemsDefMap = new Map();
+    static setItems(items) {
         CS_Economy.items = items;
         CS_Economy.itemsMap.clear();
-        items.forEach(function (item) { return CS_Economy.itemsMap.set(item.id, item); });
-    };
-    CS_Economy.setItemsDef = function (itemDefs) {
+        items.forEach((item) => CS_Economy.itemsMap.set(item.id, item));
+    }
+    static setItemsDef(itemDefs) {
         CS_Economy.itemsDef = itemDefs;
         CS_Economy.itemsDefMap.clear();
-        itemDefs.forEach(function (item) { return CS_Economy.itemsDefMap.set(item.id, item); });
-    };
-    CS_Economy.getById = function (id) {
-        var item = CS_Economy.itemsMap.get(id);
+        itemDefs.forEach((item) => CS_Economy.itemsDefMap.set(item.id, item));
+    }
+    static getById(id) {
+        const item = CS_Economy.itemsMap.get(id);
         if (item === undefined) {
             throw new Error("item not found");
         }
         return item;
-    };
-    CS_Economy.find = function (predicate) {
-        var item = CS_Economy.items.find(filterItems(predicate));
+    }
+    static find(predicate) {
+        const item = CS_Economy.items.find(filterItems(predicate));
         if (item === undefined) {
             throw new Error("item not found");
         }
         return item;
-    };
-    CS_Economy.filter = function (predicate) {
-        var items = CS_Economy.items.filter(filterItems(predicate));
+    }
+    static filter(predicate) {
+        const items = CS_Economy.items.filter(filterItems(predicate));
         if (items.length === 0) {
             throw new Error("items not found");
         }
         return items;
-    };
-    CS_Economy.items = [];
-    CS_Economy.itemsDef = [];
-    CS_Economy.itemsMap = new Map();
-    CS_Economy.itemsDefMap = new Map();
-    return CS_Economy;
-}());
+    }
+}
+export { CS_Economy };

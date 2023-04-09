@@ -1,5 +1,10 @@
 import { CS_Inventory } from "./inventory";
 import { CS_Team } from "./teams";
+export declare const CS_ITEM_CATEGORIES: {
+    label: string;
+    category: string;
+    unique: boolean;
+}[];
 export declare class CS_InventoryUI extends CS_Inventory {
     private getTypeFromCategory;
     getEquipped({ category, team }: {

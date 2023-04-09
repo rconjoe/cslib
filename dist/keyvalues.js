@@ -3,7 +3,7 @@
  *--------------------------------------------------------------------------------------------*/
 export function parse(data) {
     data = data.replace(/\[[\$!][^\]]+\]/g, "");
-    var index = 0;
+    let index = 0;
     function skipWhitespace() {
         while (data[index] && data[index].match(/[\s\t\r\n]/)) {
             index += 1;
@@ -18,7 +18,7 @@ export function parse(data) {
     function parseString() {
         if (data[index] === '"') {
             index += 1;
-            var value = "";
+            let value = "";
             while (data[index] &&
                 (data[index] !== '"' ||
                     (data[index] === '"' && data[index - 1] === "\\"))) {
@@ -45,31 +45,31 @@ export function parse(data) {
             return "";
         }
         console.log(data[index]);
-        throw new Error("Unexpected character at index ".concat(index, "."));
+        throw new Error(`Unexpected character at index ${index}.`);
     }
     function parsePairs() {
-        var pairs = [];
+        const pairs = [];
         while (data[index]) {
             if (data[index] === "}") {
                 index += 1;
                 return pairs;
             }
             skipWhitespace();
-            var key = parseString();
+            const key = parseString();
             skipWhitespace();
-            var value = parseValue();
+            const value = parseValue();
             skipWhitespace();
             pairs.push([key, value]);
         }
         return pairs;
     }
     function walk(context, pairs) {
-        return pairs.reduce(function (object, pair) {
-            var key = pair[0], value = pair[1];
+        return pairs.reduce((object, pair) => {
+            const [key, value] = pair;
             if (object[key] && !Array.isArray(object[key])) {
                 object[key] = [object[key]];
             }
-            var newValue = typeof value === "string" ? value : walk({}, value);
+            const newValue = typeof value === "string" ? value : walk({}, value);
             if (Array.isArray(object[key])) {
                 object[key].push(newValue);
             }

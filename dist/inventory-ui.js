@@ -1,91 +1,107 @@
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Ian Lucas. All rights reserved.
  *--------------------------------------------------------------------------------------------*/
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = function (d, b) {
-        extendStatics = Object.setPrototypeOf ||
-            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-        return extendStatics(d, b);
-    };
-    return function (d, b) {
-        if (typeof b !== "function" && b !== null)
-            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 import { CS_Economy } from "./economy";
 import { CS_Inventory } from "./inventory";
-var CS_InventoryUI = /** @class */ (function (_super) {
-    __extends(CS_InventoryUI, _super);
-    function CS_InventoryUI() {
-        return _super !== null && _super.apply(this, arguments) || this;
+export const CS_ITEM_CATEGORIES = [
+    {
+        label: "Pistol",
+        category: "secondary",
+        unique: false
+    },
+    {
+        label: "SMG",
+        category: "smg",
+        unique: false
+    },
+    {
+        label: "Heavy",
+        category: "heavy",
+        unique: false
+    },
+    {
+        label: "Rifle",
+        category: "rifle",
+        unique: false
+    },
+    {
+        label: "Knife",
+        category: "melee",
+        unique: true
+    },
+    {
+        label: "Glove",
+        category: "glove",
+        unique: true
+    },
+    {
+        label: "Music Kit",
+        category: "musickit",
+        unique: true
     }
-    CS_InventoryUI.prototype.getTypeFromCategory = function (category) {
-        var _a;
-        var type = (_a = CS_Economy.items.find(function (item) { return item.category === category; })) === null || _a === void 0 ? void 0 : _a.type;
+];
+export class CS_InventoryUI extends CS_Inventory {
+    getTypeFromCategory(category) {
+        const type = CS_Economy.items.find((item) => item.category === category)?.type;
         if (type === undefined) {
             throw new Error("type not found");
         }
         return type;
-    };
-    CS_InventoryUI.prototype.getEquipped = function (_a) {
-        var _this = this;
-        var category = _a.category, team = _a.team;
-        var type = this.getTypeFromCategory(category);
+    }
+    getEquipped({ category, team }) {
+        const type = this.getTypeFromCategory(category);
         if (type !== "weapon") {
-            var item = this.get({
-                item: { type: type },
-                team: team
+            const item = this.get({
+                item: { type },
+                team
             });
             if (item !== undefined && !item.unequipped) {
                 return [CS_Economy.getById(item.id)];
             }
             return [
                 CS_Economy.find({
+                    category,
                     free: true,
-                    team: team,
-                    type: type
+                    team,
+                    type
                 })
             ];
         }
-        return CS_Economy.filter({ type: type, free: true }).map(function (defaultItem) {
-            var item = _this.get({
-                item: { model: defaultItem.model, type: type },
-                team: team
+        return CS_Economy.filter({ type, free: true }).map((defaultItem) => {
+            const item = this.get({
+                item: { model: defaultItem.model, type },
+                team
             });
             if (item !== undefined && !item.unequipped) {
                 return CS_Economy.getById(item.id);
             }
             return defaultItem;
         });
-    };
-    CS_InventoryUI.prototype.getEquippable = function (_a) {
-        var category = _a.category, model = _a.model, team = _a.team;
-        var type = this.getTypeFromCategory(category);
-        var item = this.get({
-            item: { type: type, model: model },
-            team: team
+    }
+    getEquippable({ category, model, team }) {
+        const type = this.getTypeFromCategory(category);
+        const item = this.get({
+            item: { type, model },
+            team
         });
         if (item && CS_Inventory.isWithinLocktime(item.locktime)) {
             return [
                 CS_Economy.find({
+                    category,
                     free: true,
-                    team: team,
-                    type: type
+                    team,
+                    type
                 }),
                 CS_Economy.getById(item.id)
             ];
         }
         return CS_Economy.filter({
-            base: true,
-            model: model,
-            team: team,
-            type: type
+            base: model ? undefined : true,
+            category,
+            free: model && type === "glove" ? false : undefined,
+            model,
+            team,
+            type
         });
-    };
-    return CS_InventoryUI;
-}(CS_Inventory));
-export { CS_InventoryUI };
+    }
+}
