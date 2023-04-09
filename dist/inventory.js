@@ -26,8 +26,8 @@ class CS_Inventory {
         return this.items.find((equipped) => {
             const other = CS_Economy.getById(equipped.id);
             return (other.type === item.type &&
-                other.model === item.model &&
-                (equipped.team === team || item.teams === undefined));
+                (item.type !== "weapon" || other.model === item.model) &&
+                (equipped.team === team || other.teams === undefined));
         });
     }
     equip({ float, id, nametag, seed, stattrak, stickers, team }) {
@@ -44,13 +44,15 @@ class CS_Inventory {
             if (!item.free && item.id !== equipped.id) {
                 throw new Error("item is locked");
             }
-            return new CS_Inventory(this.items.map((other) => other === equipped
+            return this.items.map((other) => other === equipped
                 ? { ...other, unequipped: item.free ? true : undefined }
-                : other));
+                : other);
         }
-        const items = this.items.filter((other) => other !== equipped);
+        const items = this.items.filter((other) => other !== equipped &&
+            (CS_Inventory.isWithinLocktime(other.locktime) ||
+                !other.unequipped));
         if (item.free) {
-            return new CS_Inventory(items);
+            return items;
         }
         if (float !== undefined) {
             if (!HAS_FLOAT.includes(item.type)) {
@@ -94,7 +96,7 @@ class CS_Inventory {
                 throw new Error("invalid stattrak");
             }
         }
-        return new CS_Inventory(items.concat({
+        return items.concat({
             float,
             id: item.id,
             locktime: CS_Inventory.locktime > 0 ? Date.now() : undefined,
@@ -103,14 +105,14 @@ class CS_Inventory {
             stattrak,
             stickers,
             team
-        }));
+        });
     }
     safeEquip(item) {
         try {
             return this.equip(item);
         }
         catch {
-            return this;
+            return this.items;
         }
     }
 }

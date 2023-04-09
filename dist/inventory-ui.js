@@ -67,9 +67,12 @@ export class CS_InventoryUI extends CS_Inventory {
                 })
             ];
         }
-        return CS_Economy.filter({ type, free: true }).map((defaultItem) => {
+        return CS_Economy.filter({ type, category, free: true, team }).map((defaultItem) => {
             const item = this.get({
-                item: { model: defaultItem.model, type },
+                item: {
+                    model: defaultItem.model,
+                    type
+                },
                 team
             });
             if (item !== undefined && !item.unequipped) {
@@ -90,6 +93,7 @@ export class CS_InventoryUI extends CS_Inventory {
                 CS_Economy.find({
                     category,
                     free: true,
+                    model,
                     team,
                     type
                 }),

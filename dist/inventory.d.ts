@@ -22,6 +22,6 @@ export declare class CS_Inventory {
         item: Partial<CS_Item>;
         team: CS_Team;
     }): CS_InventoryItem | undefined;
-    equip({ float, id, nametag, seed, stattrak, stickers, team }: CS_InventoryItem): CS_Inventory;
-    safeEquip(item: CS_InventoryItem): CS_Inventory;
+    equip({ float, id, nametag, seed, stattrak, stickers, team }: CS_InventoryItem): CS_InventoryItem[];
+    safeEquip(item: CS_InventoryItem): CS_InventoryItem[];
 }
