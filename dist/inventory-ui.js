@@ -3,7 +3,7 @@
  *--------------------------------------------------------------------------------------------*/
 import { CS_Economy } from "./economy";
 import { CS_Inventory } from "./inventory";
-export const CS_ITEM_CATEGORIES = [
+export const CS_CATEGORY_MENU = [
     {
         label: "Pistol",
         category: "secondary",
@@ -47,6 +47,9 @@ export class CS_InventoryUI extends CS_Inventory {
             throw new Error("type not found");
         }
         return type;
+    }
+    static create() {
+        return new CS_Inventory().items;
     }
     getEquipped({ category, team }) {
         const type = this.getTypeFromCategory(category);

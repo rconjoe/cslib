@@ -1,15 +1,15 @@
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Ian Lucas. All rights reserved.
  *--------------------------------------------------------------------------------------------*/
-import { CS_Economy } from "./economy";
+import { CS_Economy, CS_MAX_FLOAT, CS_MAX_SEED, CS_MIN_FLOAT, CS_MIN_SEED } from "./economy";
 import { CS_TEAM_NONE } from "./teams";
-const CAN_EQUIP = ["glove", "melee", "musickit", "weapon"];
-const HAS_FLOAT = ["glove", "melee", "weapon"];
-const HAS_NAMETAG = ["melee", "weapon"];
-const HAS_SEED = ["glove", "melee"];
-const HAS_STATTRAK = ["melee", "weapon"];
-const HAS_STICKERS = ["weapon"];
-export const nametagRE = /^[A-Za-z0-9|][A-Za-z0-9|\s]{0,19}$/;
+export const CS_EQUIPABLE_ITEMS = ["glove", "melee", "musickit", "weapon"];
+export const CS_FLOATABLE_ITEMS = ["glove", "melee", "weapon"];
+export const CS_NAMETAGGABLE_ITEMS = ["melee", "weapon"];
+export const CS_SEEDABLE_ITEMS = ["glove", "melee"];
+export const CS_STATTRAKABLE_ITEMS = ["melee", "weapon"];
+export const CS_STICKERABLE_ITEMS = ["weapon"];
+export const CS_nametagRE = /^[A-Za-z0-9|][A-Za-z0-9|\s]{0,19}$/;
 class CS_Inventory {
     static locktime = 0;
     items = [];
@@ -35,7 +35,7 @@ class CS_Inventory {
         if (item.teams === undefined) {
             team = CS_TEAM_NONE;
         }
-        if (!CAN_EQUIP.includes(item.type)) {
+        if (!CS_EQUIPABLE_ITEMS.includes(item.type)) {
             throw new Error("you cannot equip this item");
         }
         const equipped = this.get({ item, team });
@@ -55,44 +55,47 @@ class CS_Inventory {
             return items;
         }
         if (float !== undefined) {
-            if (!HAS_FLOAT.includes(item.type)) {
+            if (!CS_FLOATABLE_ITEMS.includes(item.type)) {
                 throw new Error("invalid float");
             }
-            if (float < 0.000001 || float > 0.999999) {
+            if (float < CS_MIN_FLOAT || float > CS_MAX_FLOAT) {
                 throw new Error("invalid float");
             }
         }
         if (seed !== undefined) {
-            if (!HAS_SEED.includes(item.type)) {
+            if (!CS_SEEDABLE_ITEMS.includes(item.type)) {
                 throw new Error("invalid seed");
             }
-            if (seed < 1 || seed > 1000) {
+            if (seed < CS_MIN_SEED || seed > CS_MAX_SEED) {
                 throw new Error("invalid seed");
             }
         }
         if (stickers !== undefined) {
-            if (!HAS_STICKERS.includes(item.type)) {
+            if (!CS_STICKERABLE_ITEMS.includes(item.type)) {
                 throw new Error("invalid stickers");
             }
             if (stickers.length > 4) {
                 throw new Error("invalid stickers");
             }
             for (const sticker of stickers) {
+                if (sticker === null) {
+                    continue;
+                }
                 if (CS_Economy.getById(sticker).type !== "sticker") {
                     throw new Error("invalid stickers");
                 }
             }
         }
         if (nametag !== undefined) {
-            if (!HAS_NAMETAG.includes(item.type)) {
+            if (!CS_NAMETAGGABLE_ITEMS.includes(item.type)) {
                 throw new Error("invalid nametag");
             }
-            if (!nametagRE.test(nametag)) {
+            if (!CS_nametagRE.test(nametag)) {
                 throw new Error("invalid nametag");
             }
         }
         if (stattrak === true) {
-            if (!HAS_STATTRAK.includes(item.type)) {
+            if (!CS_STATTRAKABLE_ITEMS.includes(item.type)) {
                 throw new Error("invalid stattrak");
             }
         }
