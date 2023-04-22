@@ -22,6 +22,13 @@ class CS_Inventory {
     constructor(items = []) {
         this.items = items;
     }
+    getTypeFromCategory(category) {
+        const type = CS_Economy.items.find((item) => item.category === category)?.type;
+        if (type === undefined) {
+            throw new Error("type not found");
+        }
+        return type;
+    }
     get({ item, team }) {
         return this.items.find((equipped) => {
             const other = CS_Economy.getById(equipped.id);
@@ -117,6 +124,66 @@ class CS_Inventory {
         catch {
             return this.items;
         }
+    }
+    getEquipped({ category, team }) {
+        const type = this.getTypeFromCategory(category);
+        if (type !== "weapon") {
+            const item = this.get({
+                item: { type },
+                team
+            });
+            if (item !== undefined && !item.unequipped) {
+                return [CS_Economy.getById(item.id)];
+            }
+            return [
+                CS_Economy.find({
+                    category,
+                    free: true,
+                    team,
+                    type
+                })
+            ];
+        }
+        return CS_Economy.filter({ type, category, free: true, team }).map((defaultItem) => {
+            const item = this.get({
+                item: {
+                    model: defaultItem.model,
+                    type
+                },
+                team
+            });
+            if (item !== undefined && !item.unequipped) {
+                return CS_Economy.getById(item.id);
+            }
+            return defaultItem;
+        });
+    }
+    getEquippable({ category, model, team }) {
+        const type = this.getTypeFromCategory(category);
+        const item = this.get({
+            item: { type, model },
+            team
+        });
+        const isGlove = type === "glove";
+        if (item && CS_Inventory.isWithinLocktime(item.locktime)) {
+            return [
+                CS_Economy.find({
+                    category,
+                    free: true,
+                    model,
+                    team,
+                    type
+                }),
+                CS_Economy.getById(item.id)
+            ];
+        }
+        return CS_Economy.filter({
+            base: model && !isGlove ? undefined : model && isGlove ? false : true,
+            category,
+            model,
+            team,
+            type
+        });
     }
 }
 export { CS_Inventory };

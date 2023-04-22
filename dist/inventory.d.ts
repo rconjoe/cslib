@@ -24,10 +24,20 @@ export declare class CS_Inventory {
     static setLocktime(seconds: number): void;
     static isWithinLocktime(ms?: number): boolean;
     constructor(items?: CS_InventoryItem[]);
+    private getTypeFromCategory;
     get({ item, team }: {
         item: Partial<CS_Item>;
         team: CS_Team;
     }): CS_InventoryItem | undefined;
     equip({ float, id, nametag, seed, stattrak, stickers, team }: CS_InventoryItem): CS_InventoryItem[];
     safeEquip(item: CS_InventoryItem): CS_InventoryItem[];
+    getEquipped({ category, team }: {
+        category: string;
+        team: CS_Team;
+    }): CS_Item[];
+    getEquippable({ category, model, team }: {
+        category: string;
+        model?: string;
+        team: CS_Team;
+    }): CS_Item[];
 }
