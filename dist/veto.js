@@ -64,11 +64,11 @@ export class CS_Veto {
     getAvailableMaps() {
         return this.maps.filter((map) => map.value === CS_VETO_AVAILABLE);
     }
-    getAvailableMapnames() {
-        return this.getAvailableMaps().map((map) => map.mapname);
-    }
     getMap(mapname) {
         return this.maps.find((map) => map.mapname === mapname);
+    }
+    getAvailableMapnames() {
+        return this.getAvailableMaps().map((map) => map.mapname);
     }
     getCurrentTeam() {
         return this.actions.length % 2;
@@ -122,5 +122,8 @@ export class CS_Veto {
         }
         const available = this.getAvailableMapnames();
         return [...this.pickedMaps, ...available];
+    }
+    done() {
+        return this.actions.length === 0;
     }
 }

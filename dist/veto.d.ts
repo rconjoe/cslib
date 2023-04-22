@@ -15,10 +15,11 @@ export declare class CS_Veto {
     private pickedMaps;
     constructor(type: CS_VetoType, maps: CS_Map[], actions?: CS_VetoValue[]);
     private getAvailableMaps;
-    private getAvailableMapnames;
     private getMap;
+    private getAvailableMapnames;
     getCurrentTeam(): number;
     choose(mapname?: string): boolean;
     random(): boolean;
     getMaps(): string[];
+    done(): boolean;
 }
