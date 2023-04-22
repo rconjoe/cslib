@@ -1,5 +1,5 @@
-import { CS_Item } from "./economy";
-import { CS_Team } from "./teams";
+import { CS_Item } from "./economy.js";
+import { CS_Team } from "./teams.js";
 export interface CS_LoadoutItem {
     float?: number;
     id: number;

@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Ian Lucas. All rights reserved.
  *--------------------------------------------------------------------------------------------*/
-import { compare } from "./util";
+import { compare } from "./util.js";
 export const CS_MIN_FLOAT = 0.000001;
 export const CS_MAX_FLOAT = 0.999999;
 export const CS_MIN_FACTORY_NEW_FLOAT = CS_MIN_FLOAT;

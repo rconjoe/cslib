@@ -1,4 +1,4 @@
-import { CS_Map } from "./maps";
+import { CS_Map } from "./maps.js";
 export declare const CS_VETO_AVAILABLE = 0;
 export declare const CS_VETO_PICK = 1;
 export declare const CS_VETO_BAN = 2;
@@ -20,6 +20,7 @@ export declare class CS_Veto {
     getCurrentTeam(): number;
     choose(mapname?: string): boolean;
     random(): boolean;
+    getState(): CS_VetoMap[];
     getMaps(): string[];
     done(): boolean;
 }

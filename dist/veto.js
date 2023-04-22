@@ -116,6 +116,9 @@ export class CS_Veto {
         }
         return this.choose(mapname);
     }
+    getState() {
+        return this.maps;
+    }
     getMaps() {
         if (this.actions.length > 0) {
             return this.pickedMaps;

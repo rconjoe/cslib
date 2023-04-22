@@ -1,8 +1,8 @@
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Ian Lucas. All rights reserved.
  *--------------------------------------------------------------------------------------------*/
-import { CS_Economy, CS_MAX_FLOAT, CS_MAX_SEED, CS_MIN_FLOAT, CS_MIN_SEED } from "./economy";
-import { CS_TEAM_NONE } from "./teams";
+import { CS_Economy, CS_MAX_FLOAT, CS_MAX_SEED, CS_MIN_FLOAT, CS_MIN_SEED } from "./economy.js";
+import { CS_TEAM_NONE } from "./teams.js";
 export const CS_EQUIPABLE_ITEMS = ["glove", "melee", "musickit", "weapon"];
 export const CS_FLOATABLE_ITEMS = ["glove", "melee", "weapon"];
 export const CS_NAMETAGGABLE_ITEMS = ["melee", "weapon"];

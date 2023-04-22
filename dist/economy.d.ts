@@ -1,4 +1,4 @@
-import { CS_Team } from "./teams";
+import { CS_Team } from "./teams.js";
 /**
  * The CS_Item interface is designed for use in client-facing interfaces and
  * contains generic information about a particular item.
