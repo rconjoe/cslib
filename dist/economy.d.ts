@@ -44,7 +44,7 @@ export declare const CS_MAX_SEED = 1000;
 type CS_EconomyPredicate = Partial<CS_Item> & {
     team?: CS_Team;
 };
-interface CS_CategoryMenuItem {
+export interface CS_CategoryMenuItem {
     category: string;
     label: string;
     unique: boolean;
