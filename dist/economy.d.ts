@@ -44,6 +44,12 @@ export declare const CS_MAX_SEED = 1000;
 type CS_EconomyPredicate = Partial<CS_Item> & {
     team?: CS_Team;
 };
+interface CS_CategoryMenuItem {
+    category: string;
+    label: string;
+    unique: boolean;
+}
+export declare const CS_CATEGORY_MENU: CS_CategoryMenuItem[];
 export declare class CS_Economy {
     static items: CS_Item[];
     static itemsDef: CS_ItemDefinition[];

@@ -7,3 +7,6 @@ export const CS_TEAM_CT = 3;
 export function CS_toggleTeam(team) {
     return team === CS_TEAM_CT ? CS_TEAM_T : CS_TEAM_CT;
 }
+export function CS_getTeamLabel(team) {
+    return team === CS_TEAM_CT ? "ct" : "t";
+}

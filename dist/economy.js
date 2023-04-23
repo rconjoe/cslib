@@ -28,6 +28,43 @@ function filterItems(predicate) {
                 item.teams.includes(predicate.team)));
     };
 }
+export const CS_CATEGORY_MENU = [
+    {
+        label: "Pistol",
+        category: "secondary",
+        unique: false
+    },
+    {
+        label: "SMG",
+        category: "smg",
+        unique: false
+    },
+    {
+        label: "Heavy",
+        category: "heavy",
+        unique: false
+    },
+    {
+        label: "Rifle",
+        category: "rifle",
+        unique: false
+    },
+    {
+        label: "Knife",
+        category: "melee",
+        unique: true
+    },
+    {
+        label: "Glove",
+        category: "glove",
+        unique: true
+    },
+    {
+        label: "Music Kit",
+        category: "musickit",
+        unique: true
+    }
+];
 class CS_Economy {
     static items = [];
     static itemsDef = [];
