@@ -13,10 +13,10 @@ export const CS_nametagRE = /^[A-Za-z0-9|][A-Za-z0-9|\s]{0,19}$/;
 class CS_Loadout {
     static locktime = 0;
     items = [];
-    static setLocktime(seconds) {
+    static setLockTime(seconds) {
         CS_Loadout.locktime = 1000 * seconds;
     }
-    static isWithinLocktime(ms) {
+    static isWithinLockTime(ms) {
         return ms !== undefined && Date.now() - ms < CS_Loadout.locktime;
     }
     constructor(items = []) {
@@ -47,19 +47,19 @@ class CS_Loadout {
         }
         const equipped = this.get({ item, team });
         if (equipped !== undefined &&
-            CS_Loadout.isWithinLocktime(equipped.locktime)) {
+            CS_Loadout.isWithinLockTime(equipped.locktime)) {
             if (!item.free && item.id !== equipped.id) {
                 throw new Error("item is locked");
             }
-            return this.items.map((other) => other === equipped
+            return new CS_Loadout(this.items.map((other) => other === equipped
                 ? { ...other, unequipped: item.free ? true : undefined }
-                : other);
+                : other));
         }
         const items = this.items.filter((other) => other !== equipped &&
-            (CS_Loadout.isWithinLocktime(other.locktime) ||
+            (CS_Loadout.isWithinLockTime(other.locktime) ||
                 !other.unequipped));
         if (item.free) {
-            return items;
+            return new CS_Loadout(items);
         }
         if (float !== undefined) {
             if (!CS_FLOATABLE_ITEMS.includes(item.type)) {
@@ -106,7 +106,7 @@ class CS_Loadout {
                 throw new Error("invalid stattrak");
             }
         }
-        return items.concat({
+        return new CS_Loadout(items.concat({
             float,
             id: item.id,
             locktime: CS_Loadout.locktime > 0 ? Date.now() : undefined,
@@ -115,14 +115,14 @@ class CS_Loadout {
             stattrak,
             stickers,
             team
-        });
+        }));
     }
     safeEquip(item) {
         try {
             return this.equip(item);
         }
         catch {
-            return this.items;
+            return this;
         }
     }
     getEquipped({ category, team }) {
@@ -165,7 +165,7 @@ class CS_Loadout {
             team
         });
         const isGlove = type === "glove";
-        if (item && CS_Loadout.isWithinLocktime(item.locktime)) {
+        if (item && CS_Loadout.isWithinLockTime(item.locktime)) {
             return [
                 CS_Economy.find({
                     category,

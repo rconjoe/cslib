@@ -21,16 +21,16 @@ export declare const CS_nametagRE: RegExp;
 export declare class CS_Loadout {
     static locktime: number;
     items: CS_LoadoutItem[];
-    static setLocktime(seconds: number): void;
-    static isWithinLocktime(ms?: number): boolean;
+    static setLockTime(seconds: number): void;
+    static isWithinLockTime(ms?: number): boolean;
     constructor(items?: CS_LoadoutItem[]);
     private getTypeFromCategory;
     get({ item, team }: {
         item: Partial<CS_Item>;
         team: CS_Team;
     }): CS_LoadoutItem | undefined;
-    equip({ float, id, nametag, seed, stattrak, stickers, team }: CS_LoadoutItem): CS_LoadoutItem[];
-    safeEquip(item: CS_LoadoutItem): CS_LoadoutItem[];
+    equip({ float, id, nametag, seed, stattrak, stickers, team }: CS_LoadoutItem): CS_Loadout;
+    safeEquip(item: CS_LoadoutItem): CS_Loadout;
     getEquipped({ category, team }: {
         category: string;
         team: CS_Team;
