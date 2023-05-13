@@ -87,6 +87,13 @@ class CS_Economy {
         }
         return item;
     }
+    static getDefById(id) {
+        const item = CS_Economy.itemsDefMap.get(id);
+        if (item === undefined) {
+            throw new Error("item not found");
+        }
+        return item;
+    }
     static find(predicate) {
         const item = CS_Economy.items.find(filterItems(predicate));
         if (item === undefined) {

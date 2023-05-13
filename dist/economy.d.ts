@@ -20,6 +20,7 @@ export interface CS_Item {
  * item and can be used for integration with Sourcemod.
  */
 export interface CS_ItemDefinition {
+    ismelee?: boolean;
     classname?: string;
     def?: number;
     id: number;
@@ -58,6 +59,7 @@ export declare class CS_Economy {
     static setItems(items: CS_Item[]): void;
     static setItemsDef(itemDefs: CS_ItemDefinition[]): void;
     static getById(id: number): CS_Item;
+    static getDefById(id: number): CS_ItemDefinition;
     static find(predicate: CS_EconomyPredicate): CS_Item;
     static filter(predicate: CS_EconomyPredicate): CS_Item[];
 }
