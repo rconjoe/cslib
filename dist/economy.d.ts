@@ -41,6 +41,12 @@ export declare const CS_MIN_BATTLE_SCARRED_FLOAT = 0.440001;
 export declare const CS_MAX_BATTLE_SCARRED_FLOAT = 0.999999;
 export declare const CS_MIN_SEED = 1;
 export declare const CS_MAX_SEED = 1000;
+export declare const CS_FLOATABLE_ITEMS: string[];
+export declare const CS_NAMETAGGABLE_ITEMS: string[];
+export declare const CS_SEEDABLE_ITEMS: string[];
+export declare const CS_STATTRAKABLE_ITEMS: string[];
+export declare const CS_STICKERABLE_ITEMS: string[];
+export declare const CS_nametagRE: RegExp;
 type CS_EconomyPredicate = Partial<CS_Item> & {
     team?: CS_Team;
 };
@@ -61,5 +67,16 @@ export declare class CS_Economy {
     static getDefById(id: number): CS_ItemDefinition;
     static find(predicate: CS_EconomyPredicate): CS_Item;
     static filter(predicate: CS_EconomyPredicate): CS_Item[];
+    static hasFloat(item: CS_Item): boolean;
+    static validateFloat(item: CS_Item, float: number): void;
+    static hasSeed(item: CS_Item): boolean;
+    static validateSeed(item: CS_Item, seed: number): void;
+    static hasStickers(item: CS_Item): boolean;
+    static validateStickers(item: CS_Item, stickers: (number | null)[]): void;
+    static hasNametag(item: CS_Item): boolean;
+    static validateNametag(item: CS_Item, nametag: string): void;
+    static hasStattrak(item: CS_Item): boolean;
+    static validateStattrak(item: CS_Item, stattrak: boolean): void;
+    static getFloatLabel(float: number): "FactoryNew" | "MinimalWear" | "FieldTested" | "WellWorn" | "BattleScarred";
 }
 export {};

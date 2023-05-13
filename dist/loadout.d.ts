@@ -12,12 +12,6 @@ export interface CS_LoadoutItem {
     unequipped?: boolean;
 }
 export declare const CS_EQUIPABLE_ITEMS: string[];
-export declare const CS_FLOATABLE_ITEMS: string[];
-export declare const CS_NAMETAGGABLE_ITEMS: string[];
-export declare const CS_SEEDABLE_ITEMS: string[];
-export declare const CS_STATTRAKABLE_ITEMS: string[];
-export declare const CS_STICKERABLE_ITEMS: string[];
-export declare const CS_nametagRE: RegExp;
 export declare class CS_Loadout {
     static locktime: number;
     items: CS_LoadoutItem[];
