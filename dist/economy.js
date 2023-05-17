@@ -201,10 +201,10 @@ class CS_Economy {
         }
         return "BattleScarred";
     }
-    getStickerCategories() {
+    static getStickerCategories() {
         return CS_Economy.stickerCategories;
     }
-    getStickers() {
+    static getStickers() {
         return CS_Economy.stickers;
     }
 }
