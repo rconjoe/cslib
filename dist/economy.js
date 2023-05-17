@@ -92,6 +92,7 @@ class CS_Economy {
                 }
             }
         });
+        CS_Economy.stickerCategories.sort();
     }
     static setItemsDef(itemDefs) {
         CS_Economy.itemsDef = itemDefs;
