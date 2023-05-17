@@ -11,6 +11,15 @@ export interface CS_LoadoutItem {
     team: CS_Team;
     unequipped?: boolean;
 }
+export interface CS_LoadoutQueryItems {
+    csItem: CS_Item;
+    loadoutItem?: CS_LoadoutItem;
+}
+export interface CS_LoadoutQuery {
+    equippable: boolean;
+    items: CS_LoadoutQueryItems[];
+    locked?: boolean;
+}
 export declare const CS_EQUIPABLE_ITEMS: string[];
 export declare class CS_Loadout {
     static locktime: number;
@@ -28,10 +37,10 @@ export declare class CS_Loadout {
     getEquipped({ category, team }: {
         category: string;
         team: CS_Team;
-    }): CS_Item[];
+    }): CS_LoadoutQuery;
     getEquippable({ category, model, team }: {
         category: string;
         model?: string;
         team: CS_Team;
-    }): CS_Item[];
+    }): CS_LoadoutQuery;
 }

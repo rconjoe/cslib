@@ -97,30 +97,58 @@ class CS_Loadout {
                 team
             });
             if (item !== undefined && !item.unequipped) {
-                return [CS_Economy.getById(item.id)];
+                return {
+                    equippable: false,
+                    items: [
+                        {
+                            csItem: CS_Economy.getById(item.id),
+                            loadoutItem: item
+                        }
+                    ]
+                };
             }
-            return [
-                CS_Economy.find({
-                    category,
-                    free: true,
-                    team,
-                    type
-                })
-            ];
+            return {
+                equippable: false,
+                items: [
+                    {
+                        csItem: CS_Economy.find({
+                            category,
+                            free: true,
+                            team,
+                            type
+                        }),
+                        loadoutItem: undefined
+                    }
+                ]
+            };
         }
-        return CS_Economy.filter({ type, category, free: true, team }).map((defaultItem) => {
-            const item = this.get({
-                item: {
-                    model: defaultItem.model,
-                    type
-                },
+        return {
+            equippable: false,
+            items: CS_Economy.filter({
+                type,
+                category,
+                free: true,
                 team
-            });
-            if (item !== undefined && !item.unequipped) {
-                return CS_Economy.getById(item.id);
-            }
-            return defaultItem;
-        });
+            }).map((defaultItem) => {
+                const item = this.get({
+                    item: {
+                        model: defaultItem.model,
+                        type
+                    },
+                    team
+                });
+                if (item !== undefined && !item.unequipped) {
+                    return {
+                        csItem: CS_Economy.getById(item.id),
+                        loadoutItem: item
+                    };
+                }
+                return {
+                    csItem: defaultItem,
+                    loadoutItem: undefined
+                };
+            })
+        };
     }
     getEquippable({ category, model, team }) {
         const type = this.getTypeFromCategory(category);
@@ -129,25 +157,45 @@ class CS_Loadout {
             team
         });
         const isGlove = type === "glove";
+        const isMusicKit = type === "musickit";
         if (item && CS_Loadout.isWithinLockTime(item.locktime)) {
-            return [
-                CS_Economy.find({
-                    category,
-                    free: true,
-                    model,
-                    team,
-                    type
-                }),
-                CS_Economy.getById(item.id)
-            ];
+            return {
+                equippable: true,
+                items: [
+                    {
+                        csItem: CS_Economy.find({
+                            category,
+                            free: true,
+                            model,
+                            team,
+                            type
+                        })
+                    },
+                    {
+                        csItem: CS_Economy.getById(item.id),
+                        loadoutItem: item
+                    }
+                ],
+                locked: true
+            };
         }
-        return CS_Economy.filter({
-            base: model && !isGlove ? undefined : model && isGlove ? false : true,
-            category,
-            model,
-            team,
-            type
-        });
+        return {
+            equippable: model !== undefined || isMusicKit,
+            items: CS_Economy.filter({
+                base: model && !isGlove
+                    ? undefined
+                    : model && isGlove
+                        ? false
+                        : true,
+                category,
+                model,
+                team,
+                type
+            }).map((item) => ({
+                csItem: item
+            })),
+            locked: false
+        };
     }
 }
 export { CS_Loadout };

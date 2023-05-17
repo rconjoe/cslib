@@ -61,6 +61,8 @@ export declare class CS_Economy {
     static itemsDef: CS_ItemDefinition[];
     static itemsMap: Map<number, CS_Item>;
     static itemsDefMap: Map<number, CS_ItemDefinition>;
+    static stickerCategories: string[];
+    static stickers: CS_Item[];
     static setItems(items: CS_Item[]): void;
     static setItemsDef(itemDefs: CS_ItemDefinition[]): void;
     static getById(id: number): CS_Item;
@@ -78,5 +80,7 @@ export declare class CS_Economy {
     static hasStattrak(item: CS_Item): boolean;
     static validateStattrak(item: CS_Item, stattrak: boolean): void;
     static getFloatLabel(float: number): "FactoryNew" | "MinimalWear" | "FieldTested" | "WellWorn" | "BattleScarred";
+    getStickerCategories(): string[];
+    getStickers(): CS_Item[];
 }
 export {};
