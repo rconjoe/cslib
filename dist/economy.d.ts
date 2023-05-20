@@ -79,7 +79,7 @@ export declare class CS_Economy {
     static validateNametag(item: CS_Item, nametag: string): void;
     static hasStattrak(item: CS_Item): boolean;
     static validateStattrak(item: CS_Item, stattrak: boolean): void;
-    static getFloatLabel(float: number): "FactoryNew" | "MinimalWear" | "FieldTested" | "WellWorn" | "BattleScarred";
+    static getFloatLabel(float: number): "FN" | "MW" | "FT" | "WW" | "BS";
     static getStickerCategories(): string[];
     static getStickers(): CS_Item[];
 }
