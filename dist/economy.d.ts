@@ -47,6 +47,8 @@ export declare const CS_SEEDABLE_ITEMS: string[];
 export declare const CS_STATTRAKABLE_ITEMS: string[];
 export declare const CS_STICKERABLE_ITEMS: string[];
 export declare const CS_nametagRE: RegExp;
+export declare const CS_MIN_STICKER_FLOAT = 0;
+export declare const CS_MAX_STICKER_FLOAT = 0.9;
 type CS_EconomyPredicate = Partial<CS_Item> & {
     team?: CS_Team;
 };

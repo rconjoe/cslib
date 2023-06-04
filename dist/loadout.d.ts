@@ -8,6 +8,7 @@ export interface CS_LoadoutItem {
     seed?: number;
     stattrak?: boolean;
     stickers?: (number | null)[];
+    stickerswear?: (number | null)[];
     team: CS_Team;
     unequipped?: boolean;
 }
