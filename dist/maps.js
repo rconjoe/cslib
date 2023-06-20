@@ -72,7 +72,7 @@ export const CS_ALL_MAPS = [
     CS_OVERPASS_MAP,
     CS_VERTIGO_MAP
 ];
-export function CS_getMapCommand(map) {
+export function CS_getChangeLevelCommand(map) {
     const mapstring = typeof map === "string" ? map : map.mapname;
     const matches = mapstring.match(/workshop\/(\d+)\/[\w_]+/);
     if (matches) {
