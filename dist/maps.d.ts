@@ -11,6 +11,7 @@ export declare const CS_DUST2_MAP: CS_Map;
 export declare const CS_NUKE_MAP: CS_Map;
 export declare const CS_OVERPASS_MAP: CS_Map;
 export declare const CS_VERTIGO_MAP: CS_Map;
+export declare const CS_TRAIN_MAP: CS_Map;
 export declare const CS_OLD_CBBLE_MAP: CS_Map;
 export declare const CS_OLD_CACHE_MAP: CS_Map;
 export declare const CS_ACTIVE_MAP_POOL: CS_Map[];
