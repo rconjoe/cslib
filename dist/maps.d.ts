@@ -17,3 +17,4 @@ export declare const CS_OLD_CACHE_MAP: CS_Map;
 export declare const CS_ACTIVE_MAP_POOL: CS_Map[];
 export declare const CS_ALL_MAPS: CS_Map[];
 export declare function CS_getChangeLevelCommand(map: CS_Map | string): string;
+export declare function CS_getMapnameName(mapname: string): string;
