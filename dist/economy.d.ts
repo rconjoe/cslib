@@ -9,6 +9,7 @@ export interface CS_Item {
     free?: boolean;
     id: number;
     image: string;
+    localimage?: number;
     model?: string;
     name: string;
     rarity: string;
@@ -20,7 +21,6 @@ export interface CS_Item {
  * item and can be used for integration with Sourcemod.
  */
 export interface CS_ItemDefinition {
-    classname?: string;
     def?: number;
     id: number;
     musicid?: number;
@@ -49,6 +49,9 @@ export declare const CS_STICKERABLE_ITEMS: string[];
 export declare const CS_nametagRE: RegExp;
 export declare const CS_MIN_STICKER_FLOAT = 0;
 export declare const CS_MAX_STICKER_FLOAT = 0.9;
+export declare const CS_DEFAULT_GENERATED_HEAVY = 1;
+export declare const CS_DEFAULT_GENERATED_MEDIUM = 2;
+export declare const CS_DEFAULT_GENERATED_LIGHT = 4;
 type CS_EconomyPredicate = Partial<CS_Item> & {
     team?: CS_Team;
 };

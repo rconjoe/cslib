@@ -27,12 +27,17 @@ export declare class CS_Loadout {
     items: CS_LoadoutItem[];
     static setLockTime(seconds: number): void;
     static isWithinLockTime(ms?: number): boolean;
+    static resolveImage(csItem: CS_Item, loadoutItem: CS_LoadoutItem, baseUrl: string): string;
     constructor(items?: CS_LoadoutItem[]);
     private getTypeFromCategory;
     get({ item, team }: {
         item: Partial<CS_Item>;
         team: CS_Team;
     }): CS_LoadoutItem | undefined;
+    getAll(team?: CS_Team): {
+        csItem: CS_Item;
+        loadoutItem: CS_LoadoutItem;
+    }[];
     equip({ float, id, nametag, seed, stattrak, stickers, team }: CS_LoadoutItem): CS_Loadout;
     safeEquip(item: CS_LoadoutItem): CS_Loadout;
     getEquipped({ category, team }: {
