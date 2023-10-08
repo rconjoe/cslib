@@ -27,7 +27,6 @@ export declare class CS_Loadout {
     items: CS_LoadoutItem[];
     static setLockTime(seconds: number): void;
     static isWithinLockTime(ms?: number): boolean;
-    static resolveImage(csItem: CS_Item, loadoutItem: CS_LoadoutItem, baseUrl: string): string;
     constructor(items?: CS_LoadoutItem[]);
     private getTypeFromCategory;
     get({ item, team }: {

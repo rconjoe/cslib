@@ -79,7 +79,7 @@ export declare class CS_Economy {
     static hasSeed(item: CS_Item): boolean;
     static validateSeed(item: CS_Item, seed: number): void;
     static hasStickers(item: CS_Item): boolean;
-    static validateStickers(item: CS_Item, stickers: (number | null)[]): void;
+    static validateStickers(item: CS_Item, stickers: (number | null)[], stickerswear?: (number | null)[]): void;
     static hasNametag(item: CS_Item): boolean;
     static validateNametag(item: CS_Item, nametag: string): void;
     static hasStattrak(item: CS_Item): boolean;
