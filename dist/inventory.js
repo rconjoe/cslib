@@ -1,4 +1,4 @@
-import { CS_DEFAULT_GENERATED_HEAVY, CS_DEFAULT_GENERATED_LIGHT, CS_DEFAULT_GENERATED_MEDIUM, CS_Economy, CS_MIN_FIELD_TESTED_FLOAT, CS_MIN_FLOAT, CS_MIN_MINIMAL_WEAR_FLOAT } from "./economy.js";
+import { CS_DEFAULT_GENERATED_HEAVY, CS_DEFAULT_GENERATED_LIGHT, CS_DEFAULT_GENERATED_MEDIUM, CS_Economy, CS_MAX_FIELD_TESTED_FLOAT, CS_MAX_MINIMAL_WEAR_FLOAT } from "./economy.js";
 import { CS_TEAM_CT, CS_TEAM_T } from "./teams.js";
 export class CS_Inventory {
     items;
@@ -12,29 +12,23 @@ export class CS_Inventory {
         if (csItem.localimage === undefined) {
             return csItem.image;
         }
+        const hasLight = csItem.localimage & CS_DEFAULT_GENERATED_LIGHT;
         if (inventoryItem.float === undefined) {
+            if (hasLight) {
+                return `${baseUrl}/${csItem.id}_light.png`;
+            }
             return csItem.image;
         }
-        const hasLight = csItem.localimage & CS_DEFAULT_GENERATED_LIGHT;
         const hasMedium = csItem.localimage & CS_DEFAULT_GENERATED_MEDIUM;
         const hasHeavy = csItem.localimage & CS_DEFAULT_GENERATED_HEAVY;
-        if (inventoryItem.float >= CS_MIN_MINIMAL_WEAR_FLOAT && hasLight) {
+        if (inventoryItem.float < CS_MAX_MINIMAL_WEAR_FLOAT && hasLight) {
             return `${baseUrl}/${csItem.id}_light.png`;
         }
-        if (inventoryItem.float >= CS_MIN_FIELD_TESTED_FLOAT &&
-            inventoryItem.float < CS_MIN_MINIMAL_WEAR_FLOAT &&
-            hasMedium) {
+        if (inventoryItem.float < CS_MAX_FIELD_TESTED_FLOAT && hasMedium) {
             return `${baseUrl}/${csItem.id}_medium.png`;
         }
-        if (inventoryItem.float >= CS_MIN_FLOAT &&
-            inventoryItem.float < CS_MIN_FIELD_TESTED_FLOAT &&
-            hasHeavy) {
+        if (hasHeavy) {
             return `${baseUrl}/${csItem.id}_heavy.png`;
-        }
-        // If don't have the proper float to display, we are going to the get
-        // the highest quality we have or fall back to legacy image (from CSGO).
-        if (hasLight) {
-            return `${baseUrl}/${csItem.id}_light.png`;
         }
         return csItem.image;
     }
