@@ -15,7 +15,6 @@ export declare class CS_Inventory {
     private items;
     private limit;
     constructor(items?: CS_InventoryItem[], limit?: number);
-    static resolveImage(inventoryItem: CS_InventoryItem, baseUrl: string): string;
     canAddNewItem(): boolean;
     add(item: CS_InventoryItem): CS_Inventory;
     remove(at: number): CS_Inventory;

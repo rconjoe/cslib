@@ -1,4 +1,4 @@
-import { CS_DEFAULT_GENERATED_HEAVY, CS_DEFAULT_GENERATED_LIGHT, CS_DEFAULT_GENERATED_MEDIUM, CS_Economy, CS_MAX_FIELD_TESTED_FLOAT, CS_MAX_MINIMAL_WEAR_FLOAT } from "./economy.js";
+import { CS_Economy } from "./economy.js";
 import { CS_TEAM_CT, CS_TEAM_T } from "./teams.js";
 export class CS_Inventory {
     items;
@@ -6,31 +6,6 @@ export class CS_Inventory {
     constructor(items = [], limit = 256) {
         this.items = items;
         this.limit = limit;
-    }
-    static resolveImage(inventoryItem, baseUrl) {
-        const csItem = CS_Economy.getById(inventoryItem.id);
-        if (csItem.localimage === undefined) {
-            return csItem.image;
-        }
-        const hasLight = csItem.localimage & CS_DEFAULT_GENERATED_LIGHT;
-        if (inventoryItem.float === undefined) {
-            if (hasLight) {
-                return `${baseUrl}/${csItem.id}_light.png`;
-            }
-            return csItem.image;
-        }
-        const hasMedium = csItem.localimage & CS_DEFAULT_GENERATED_MEDIUM;
-        const hasHeavy = csItem.localimage & CS_DEFAULT_GENERATED_HEAVY;
-        if (inventoryItem.float < CS_MAX_MINIMAL_WEAR_FLOAT && hasLight) {
-            return `${baseUrl}/${csItem.id}_light.png`;
-        }
-        if (inventoryItem.float < CS_MAX_FIELD_TESTED_FLOAT && hasMedium) {
-            return `${baseUrl}/${csItem.id}_medium.png`;
-        }
-        if (hasHeavy) {
-            return `${baseUrl}/${csItem.id}_heavy.png`;
-        }
-        return csItem.image;
     }
     canAddNewItem() {
         return this.items.length < this.limit;

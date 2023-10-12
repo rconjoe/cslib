@@ -87,5 +87,6 @@ export declare class CS_Economy {
     static getFloatLabel(float: number): "FN" | "MW" | "FT" | "WW" | "BS";
     static getStickerCategories(): string[];
     static getStickers(): CS_Item[];
+    static resolveImageSrc(baseUrl: string, id: number, float?: number): string;
 }
 export {};
