@@ -225,6 +225,9 @@ class CS_Economy {
     static resolveImageSrc(baseUrl, id, float) {
         const csItem = CS_Economy.getById(id);
         if (csItem.localimage === undefined) {
+            if (csItem.image.charAt(0) === "/") {
+                return `${baseUrl}${csItem.image}`;
+            }
             return csItem.image;
         }
         if (csItem.base) {
