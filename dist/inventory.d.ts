@@ -25,4 +25,5 @@ export declare class CS_Inventory {
         inventoryItem: CS_InventoryItem;
         csItem: import("./economy.js").CS_Item;
     }[];
+    getItems(): CS_InventoryItem[];
 }
