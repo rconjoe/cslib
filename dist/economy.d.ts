@@ -14,7 +14,7 @@ export interface CS_Item {
     name: string;
     rarity: string;
     teams?: CS_Team[];
-    type: "glove" | "melee" | "musickit" | "sticker" | "weapon" | "patch" | "agent";
+    type: "glove" | "melee" | "musickit" | "sticker" | "weapon" | "patch" | "agent" | "pin";
 }
 /**
  * The CS_ItemDefinition interface contains more technical information about an
