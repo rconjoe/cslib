@@ -14,7 +14,7 @@ export interface CS_Item {
     name: string;
     rarity: string;
     teams?: CS_Team[];
-    type: "glove" | "melee" | "musickit" | "sticker" | "weapon";
+    type: "glove" | "melee" | "musickit" | "sticker" | "weapon" | "patch" | "agent";
 }
 /**
  * The CS_ItemDefinition interface contains more technical information about an
@@ -26,6 +26,7 @@ export interface CS_ItemDefinition {
     musicid?: number;
     paintid?: number;
     stickerid?: number;
+    patchid?: number;
 }
 export declare const CS_MIN_FLOAT = 0.000001;
 export declare const CS_MAX_FLOAT = 0.999999;
