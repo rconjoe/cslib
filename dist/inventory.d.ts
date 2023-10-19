@@ -1,4 +1,5 @@
 import { CS_Team } from "./teams.js";
+export declare const CS_INVENTORY_EQUIPPABLE_ITEMS: string[];
 export interface CS_InventoryItem {
     equipped?: boolean;
     equippedCT?: boolean;
