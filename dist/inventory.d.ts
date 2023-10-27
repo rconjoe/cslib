@@ -16,15 +16,10 @@ export declare class CS_Inventory {
     private items;
     private limit;
     constructor(items?: CS_InventoryItem[], limit?: number);
-    canAddNewItem(): boolean;
+    full(): boolean;
     add(item: CS_InventoryItem): CS_Inventory;
     remove(at: number): CS_Inventory;
     equip(at: number, team?: CS_Team): CS_Inventory;
     unequip(at: number, team?: CS_Team): CS_Inventory;
-    getAll(): {
-        index: number;
-        inventoryItem: CS_InventoryItem;
-        csItem: import("./economy.js").CS_Item;
-    }[];
     getItems(): CS_InventoryItem[];
 }
