@@ -104,7 +104,7 @@ export declare const CS_STICKERABLE_ITEMS: string[];
 /**
  * Regular expression for validating nametags.
  */
-export declare const CS_nametagRE: RegExp;
+export declare const CS_NAMETAG_RE: RegExp;
 /**
  * Minimum float value for stickers.
  */
