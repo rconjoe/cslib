@@ -204,7 +204,7 @@ class CS_Economy {
     /**
      * Array of Counter-Strike sticker items.
      */
-    static stickers;
+    static stickers = [];
     /**
      * Set the Counter-Strike items and their definitions.
      * @param {CS_Item[]} items - An array of Counter-Strike items.
@@ -214,6 +214,7 @@ class CS_Economy {
         CS_Economy.categories.clear();
         CS_Economy.items = items;
         CS_Economy.itemMap.clear();
+        CS_Economy.stickers = [];
         items.forEach((item) => {
             CS_Economy.itemMap.set(item.id, item);
             if (item.type === "sticker") {
