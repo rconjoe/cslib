@@ -1,6 +1,10 @@
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Ian Lucas. All rights reserved.
  *--------------------------------------------------------------------------------------------*/
+/**
+ * A simple Valve Key Value parser.
+ * @return {any}
+ */
 export function parse(data) {
     data = data.replace(/\[[\$!][^\]]+\]/g, "");
     let index = 0;

@@ -1,5 +1,8 @@
-import { CS_Economy } from "./economy.js";
+import { CS_Economy, CS_validateFloat, CS_validateNametag, CS_validateSeed, CS_validateStatTrak, CS_validateStickers } from "./economy.js";
 import { CS_TEAM_CT, CS_TEAM_T } from "./teams.js";
+/**
+ * Array of Counter-Strike inventory item types that can be equipped.
+ */
 export const CS_INVENTORY_EQUIPPABLE_ITEMS = [
     "weapon",
     "glove",
@@ -9,35 +12,58 @@ export const CS_INVENTORY_EQUIPPABLE_ITEMS = [
     "patch",
     "pin"
 ];
+/**
+ * Represents a Counter-Strike inventory.
+ */
 export class CS_Inventory {
+    /**
+     * An array containing Counter-Strike inventory items in the inventory.
+     */
     items;
+    /**
+     * The maximum limit of items that the inventory can hold.
+     */
     limit;
+    /**
+     * Create a new Counter-Strike inventory.
+     * @param {CS_InventoryItem[]} items - An array of Counter-Strike inventory items.
+     * @param {number} limit - The maximum limit of items in the inventory (default is 256).
+     */
     constructor(items = [], limit = 256) {
         this.items = items;
         this.limit = limit;
     }
+    /**
+     * Check if the inventory is full.
+     * @returns {boolean} - `true` if the inventory is full, `false` otherwise.
+     */
     full() {
         return this.items.length === this.limit;
     }
+    /**
+     * Add an item to the inventory.
+     * @param {CS_InventoryItem} item - The item to add.
+     * @returns {CS_Inventory} - A new inventory with the added item or the original inventory if it's full.
+     */
     add(item) {
         if (this.full()) {
             return this;
         }
         const csItem = CS_Economy.getById(item.id);
         if (item.float !== undefined) {
-            CS_Economy.validateFloat(csItem, item.float);
+            CS_validateFloat(item.float, csItem);
         }
         if (item.seed !== undefined) {
-            CS_Economy.validateSeed(csItem, item.seed);
+            CS_validateSeed(item.seed, csItem);
         }
         if (item.stickers !== undefined) {
-            CS_Economy.validateStickers(csItem, item.stickers, item.stickersfloat);
+            CS_validateStickers(csItem, item.stickers, item.stickersfloat);
         }
         if (item.nametag !== undefined) {
-            CS_Economy.validateNametag(csItem, item.nametag);
+            CS_validateNametag(item.nametag, csItem);
         }
         if (item.stattrak !== undefined) {
-            CS_Economy.validateStattrak(csItem, item.stattrak);
+            CS_validateStatTrak(item.stattrak, csItem);
         }
         return new CS_Inventory([
             {
@@ -49,6 +75,24 @@ export class CS_Inventory {
             ...this.items
         ], this.limit);
     }
+    /**
+     * Safely add an item to the inventory, catching and handling any exceptions.
+     * @param {CS_InventoryItem} item - The item to add.
+     * @returns {CS_Inventory} - A new inventory with the added item or the original inventory if an exception occurs.
+     */
+    safeAdd(item) {
+        try {
+            return this.add(item);
+        }
+        catch {
+            return this;
+        }
+    }
+    /**
+     * Remove an item from the inventory at a specified index.
+     * @param {number} at - The index of the item to remove.
+     * @returns {CS_Inventory} - A new inventory with the item removed or the original inventory if the index is out of bounds.
+     */
     remove(at) {
         if (!this.items[at]) {
             return this;
@@ -57,6 +101,12 @@ export class CS_Inventory {
             return at !== index;
         }), this.limit);
     }
+    /**
+     * Equip an item in the inventory at a specified index.
+     * @param {number} at - The index of the item to equip.
+     * @param {CS_Team} [team] - The team to which the item should be equipped (optional).
+     * @returns {CS_Inventory} - A new inventory with the item equipped or the original inventory if the operation is not allowed.
+     */
     equip(at, team) {
         const item = this.items[at];
         if (!item) {
@@ -106,6 +156,12 @@ export class CS_Inventory {
             return current;
         }), this.limit);
     }
+    /**
+     * Unequip an item in the inventory at a specified index.
+     * @param {number} at - The index of the item to unequip.
+     * @param {CS_Team} [team] - The team from which the item should be unequipped (optional).
+     * @returns {CS_Inventory} - A new inventory with the item unequipped or the original inventory if the operation is not allowed.
+     */
     unequip(at, team) {
         if (!this.items[at]) {
             return this;
@@ -122,6 +178,10 @@ export class CS_Inventory {
             return item;
         }), this.limit);
     }
+    /**
+     * Get an array of all items in the inventory.
+     * @returns {CS_InventoryItem[]} - An array of all items in the inventory.
+     */
     getItems() {
         return this.items;
     }
