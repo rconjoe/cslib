@@ -1,3 +1,7 @@
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Ian Lucas. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
 import { CS_Economy, CS_validateFloat, CS_validateNametag, CS_validateSeed, CS_validateStatTrak, CS_validateStickers } from "./economy.js";
 import { CS_TEAM_CT, CS_TEAM_T } from "./teams.js";
 /**
