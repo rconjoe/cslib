@@ -176,6 +176,11 @@ export const CS_CATEGORY_MENU = [
         label: "Pin",
         category: "pin",
         unique: true
+    },
+    {
+        label: "Case",
+        category: "case",
+        unique: true
     }
 ];
 /**

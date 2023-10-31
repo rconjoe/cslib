@@ -4,17 +4,21 @@ import { CS_Team } from "./teams.js";
  * contains generic information about a particular item.
  */
 export interface CS_Item {
+    altname?: string;
     base?: boolean;
     category: string;
+    contents?: number[];
     free?: boolean;
     id: number;
     image: string;
     localimage?: number;
     model?: string;
     name: string;
+    rarecontents?: number[];
+    rareimage?: number;
     rarity: string;
     teams?: CS_Team[];
-    type: "agent" | "glove" | "melee" | "musickit" | "patch" | "pin" | "sticker" | "weapon";
+    type: "agent" | "case" | "glove" | "melee" | "musickit" | "patch" | "pin" | "sticker" | "weapon";
 }
 /**
  * The CS_ItemDefinition interface contains more technical information about an
