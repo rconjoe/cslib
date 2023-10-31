@@ -314,4 +314,11 @@ export declare function CS_getStickers(): CS_Item[];
  * @returns {string} - The resolved image URL.
  */
 export declare function CS_resolveItemImage(baseUrl: string, csItem: CS_Item | number, float?: number): string;
+/**
+ * Resolve the rare image URL for a case.
+ * @param {string} baseUrl - The base URL for images.
+ * @param {CS_Item | number} csItem - The Counter-Strike item or its ID.
+ * @returns {string} - The resolved image URL.
+ */
+export declare function CS_resolveCaseRareImage(baseUrl: string, csItem: CS_Item | number): string;
 export {};
