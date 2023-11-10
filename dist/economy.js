@@ -92,17 +92,13 @@ export const CS_MIN_STICKER_FLOAT = 0;
  */
 export const CS_MAX_STICKER_FLOAT = 0.9;
 /**
- * Default generated heavy value.
+ * For cases that don't have custom rare image.
  */
-export const CS_DEFAULT_GENERATED_HEAVY = 0b001;
+export const CS_RARE_IMAGE_DEFAULT = 1;
 /**
- * Default generated medium value.
+ * For cases that have custom rare image.
  */
-export const CS_DEFAULT_GENERATED_MEDIUM = 0b010;
-/**
- * Default generated light value.
- */
-export const CS_DEFAULT_GENERATED_LIGHT = 0b100;
+export const CS_RARE_IMAGE_CUSTOM = 2;
 /**
  * A function that filters Counter-Strike items based on a given predicate.
  */
@@ -192,17 +188,9 @@ class CS_Economy {
      */
     static items = [];
     /**
-     * Array of all Counter-Strike item definitions.
-     */
-    static definitions = [];
-    /**
      * Map of Counter-Strike item IDs to their corresponding items.
      */
     static itemMap = new Map();
-    /**
-     * Map of Counter-Strike item definition IDs to their corresponding definitions.
-     */
-    static definitionMap = new Map();
     /**
      * Set of Counter-Strike sticker categories.
      */
@@ -214,9 +202,8 @@ class CS_Economy {
     /**
      * Set the Counter-Strike items and their definitions.
      * @param {CS_Item[]} items - An array of Counter-Strike items.
-     * @param {CS_ItemDefinition[]} [definitions] - An array of Counter-Strike item definitions (optional).
      */
-    static setItems(items, definitions = []) {
+    static initialize(items) {
         CS_Economy.categories.clear();
         CS_Economy.items = items;
         CS_Economy.itemMap.clear();
@@ -228,9 +215,6 @@ class CS_Economy {
                 CS_Economy.categories.add(item.category);
             }
         });
-        CS_Economy.definitions = definitions;
-        CS_Economy.definitionMap.clear();
-        definitions.forEach((item) => CS_Economy.definitionMap.set(item.id, item));
     }
     /**
      * Get a Counter-Strike item by its ID.
@@ -239,18 +223,6 @@ class CS_Economy {
      */
     static getById(id) {
         const item = CS_Economy.itemMap.get(id);
-        if (item === undefined) {
-            throw new Error("item not found");
-        }
-        return item;
-    }
-    /**
-     * Get a Counter-Strike item definition by its ID.
-     * @param {number} id - The ID of the Counter-Strike item definition to retrieve.
-     * @returns {CS_ItemDefinition} - The Counter-Strike item definition.
-     */
-    static getDefById(id) {
-        const item = CS_Economy.definitionMap.get(id);
         if (item === undefined) {
             throw new Error("item not found");
         }
@@ -284,11 +256,11 @@ export function CS_filterItems(predicate) {
 }
 /**
  * Check if a Counter-Strike item has a float value.
- * @param {CS_Item} item - The Counter-Strike item to check.
+ * @param {CS_Item} csItem - The Counter-Strike item to check.
  * @returns {boolean} - `true` if the item has a float value, `false` otherwise.
  */
-export function CS_hasFloat(item) {
-    return CS_FLOATABLE_ITEMS.includes(item.type);
+export function CS_hasFloat(csItem) {
+    return CS_FLOATABLE_ITEMS.includes(csItem.type);
 }
 /**
  * Validate a float value for Counter-Strike items.
@@ -316,11 +288,11 @@ export function CS_validateFloat(float, forItem) {
 export const CS_safeValidateFloat = safe(CS_validateFloat);
 /**
  * Check if a Counter-Strike item has a seed value.
- * @param {CS_Item} item - The Counter-Strike item to check.
+ * @param {CS_Item} csItem - The Counter-Strike item to check.
  * @returns {boolean} - `true` if the item has a seed value, `false` otherwise.
  */
-export function CS_hasSeed(item) {
-    return CS_SEEDABLE_ITEMS.includes(item.type);
+export function CS_hasSeed(csItem) {
+    return CS_SEEDABLE_ITEMS.includes(csItem.type);
 }
 /**
  * Validate a seed value for Counter-Strike items.
@@ -348,21 +320,21 @@ export function CS_validateSeed(seed, forItem) {
 export const CS_safeValidateSeed = safe(CS_validateSeed);
 /**
  * Check if a Counter-Strike item can have stickers.
- * @param {CS_Item} item - The Counter-Strike item to check.
+ * @param {CS_Item} csItem - The Counter-Strike item to check.
  * @returns {boolean} - `true` if the item can have stickers, `false` otherwise.
  */
-export function CS_hasStickers(item) {
-    return CS_STICKERABLE_ITEMS.includes(item.type);
+export function CS_hasStickers(csItem) {
+    return CS_STICKERABLE_ITEMS.includes(csItem.type);
 }
 /**
  * Validate stickers for a Counter-Strike item.
- * @param {CS_Item} item - The Counter-Strike item for which stickers are being validated.
+ * @param {CS_Item} csItem - The Counter-Strike item for which stickers are being validated.
  * @param {(number | null)[]} stickers - An array of sticker IDs, with null values for empty slots.
  * @param {(number | null)[]} [stickerswear] - An array of sticker wear values (optional).
  * @returns {boolean} - `true` if the stickers are valid, otherwise throws an error.
  */
-export function CS_validateStickers(item, stickers, stickerswear = []) {
-    if (!CS_hasStickers(item)) {
+export function CS_validateStickers(csItem, stickers, stickerswear = []) {
+    if (!CS_hasStickers(csItem)) {
         throw new Error("item does not have seed");
     }
     if (stickers.length > 4) {
@@ -392,11 +364,11 @@ export function CS_validateStickers(item, stickers, stickerswear = []) {
 }
 /**
  * Check if a Counter-Strike item can have a nametag.
- * @param {CS_Item} item - The Counter-Strike item to check.
+ * @param {CS_Item} csItem - The Counter-Strike item to check.
  * @returns {boolean} - `true` if the item can have a nametag, `false` otherwise.
  */
-export function CS_hasNametag(item) {
-    return CS_NAMETAGGABLE_ITEMS.includes(item.type);
+export function CS_hasNametag(csItem) {
+    return CS_NAMETAGGABLE_ITEMS.includes(csItem.type);
 }
 /**
  * Validate a nametag for a Counter-Strike item.
@@ -421,11 +393,11 @@ export function CS_validateNametag(nametag, forItem) {
 export const CS_safeValidateNametag = safe(CS_validateNametag);
 /**
  * Check if a Counter-Strike item can have StatTrak.
- * @param {CS_Item} item - The Counter-Strike item to check.
+ * @param {CS_Item} csItem - The Counter-Strike item to check.
  * @returns {boolean} - `true` if the item can be StatTrak, `false` otherwise.
  */
-export function CS_hasStatTrak(item) {
-    return CS_STATTRAKABLE_ITEMS.includes(item.type);
+export function CS_hasStatTrak(csItem) {
+    return CS_STATTRAKABLE_ITEMS.includes(csItem.type);
 }
 /**
  * Validate StatTrak status for a Counter-Strike item.
@@ -481,37 +453,29 @@ export function CS_getStickers() {
  * @returns {string} - The resolved image URL.
  */
 export function CS_resolveItemImage(baseUrl, csItem, float) {
-    csItem = typeof csItem === "number" ? CS_Economy.getById(csItem) : csItem;
-    const { id } = csItem;
-    if (csItem.localimage === undefined) {
-        if (csItem.image.charAt(0) === "/") {
-            return `${baseUrl}${csItem.image}`;
+    const { base, id, image, localimage } = typeof csItem === "number" ? CS_Economy.getById(csItem) : csItem;
+    if (!localimage) {
+        if (image.charAt(0) === "/") {
+            return `${baseUrl}${image}`;
         }
-        return csItem.image;
+        return image;
     }
-    if (csItem.base) {
+    if (base) {
         return `${baseUrl}/${id}.png`;
     }
-    const hasLight = csItem.localimage & CS_DEFAULT_GENERATED_LIGHT;
     const url = `${baseUrl}/${id}`;
     if (float === undefined) {
-        if (hasLight) {
-            return `${url}_light.png`;
-        }
-        return csItem.image;
-    }
-    const hasMedium = csItem.localimage & CS_DEFAULT_GENERATED_MEDIUM;
-    const hasHeavy = csItem.localimage & CS_DEFAULT_GENERATED_HEAVY;
-    if (float < 1 / 3 && hasLight) {
         return `${url}_light.png`;
     }
-    if (float < 2 / 3 && hasMedium) {
+    // In the future we need to be more precise on this, I don't think it's
+    // correct.  Please let me know if you know which float each image matches.
+    if (float < 1 / 3) {
+        return `${url}_light.png`;
+    }
+    if (float < 2 / 3) {
         return `${url}_medium.png`;
     }
-    if (hasHeavy) {
-        return `${url}_heavy.png`;
-    }
-    return csItem.image;
+    return `${url}_heavy.png`;
 }
 /**
  * Resolve the rare image URL for a case.

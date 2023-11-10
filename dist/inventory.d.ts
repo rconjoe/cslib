@@ -93,17 +93,17 @@ export declare class CS_Inventory {
     /**
      * Equip an item in the inventory at a specified index.
      * @param {number} at - The index of the item to equip.
-     * @param {CS_Team} [team] - The team to which the item should be equipped (optional).
+     * @param {CS_Team} [csTeam] - The team to which the item should be equipped (optional).
      * @returns {CS_Inventory} - A new inventory with the item equipped or the original inventory if the operation is not allowed.
      */
-    equip(at: number, team?: CS_Team): CS_Inventory;
+    equip(at: number, csTeam?: CS_Team): CS_Inventory;
     /**
      * Unequip an item in the inventory at a specified index.
      * @param {number} at - The index of the item to unequip.
-     * @param {CS_Team} [team] - The team from which the item should be unequipped (optional).
+     * @param {CS_Team} [csTeam] - The team from which the item should be unequipped (optional).
      * @returns {CS_Inventory} - A new inventory with the item unequipped or the original inventory if the operation is not allowed.
      */
-    unequip(at: number, team?: CS_Team): CS_Inventory;
+    unequip(at: number, csTeam?: CS_Team): CS_Inventory;
     /**
      * Get an array of all items in the inventory.
      * @returns {CS_InventoryItem[]} - An array of all items in the inventory.

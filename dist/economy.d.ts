@@ -8,10 +8,12 @@ export interface CS_Item {
     base?: boolean;
     category: string;
     contents?: number[];
+    def?: number;
     free?: boolean;
     id: number;
     image: string;
-    localimage?: number;
+    itemid?: number;
+    localimage?: boolean;
     model?: string;
     name: string;
     rarecontents?: number[];
@@ -19,15 +21,6 @@ export interface CS_Item {
     rarity: string;
     teams?: CS_Team[];
     type: "agent" | "case" | "glove" | "melee" | "musickit" | "patch" | "pin" | "sticker" | "weapon";
-}
-/**
- * The CS_ItemDefinition interface contains more technical information about an
- * item and can be used for integration with SourceMod.
- */
-export interface CS_ItemDefinition {
-    def?: number;
-    id: number;
-    itemid?: number;
 }
 /**
  * Minimum allowed float value for Counter-Strike items.
@@ -118,17 +111,13 @@ export declare const CS_MIN_STICKER_FLOAT = 0;
  */
 export declare const CS_MAX_STICKER_FLOAT = 0.9;
 /**
- * Default generated heavy value.
+ * For cases that don't have custom rare image.
  */
-export declare const CS_DEFAULT_GENERATED_HEAVY = 1;
+export declare const CS_RARE_IMAGE_DEFAULT = 1;
 /**
- * Default generated medium value.
+ * For cases that have custom rare image.
  */
-export declare const CS_DEFAULT_GENERATED_MEDIUM = 2;
-/**
- * Default generated light value.
- */
-export declare const CS_DEFAULT_GENERATED_LIGHT = 4;
+export declare const CS_RARE_IMAGE_CUSTOM = 2;
 /**
  * A predicate to filter Counter-Strike items based on various attributes.
  */
@@ -156,17 +145,9 @@ export declare class CS_Economy {
      */
     static items: CS_Item[];
     /**
-     * Array of all Counter-Strike item definitions.
-     */
-    static definitions: CS_ItemDefinition[];
-    /**
      * Map of Counter-Strike item IDs to their corresponding items.
      */
     static itemMap: Map<number, CS_Item>;
-    /**
-     * Map of Counter-Strike item definition IDs to their corresponding definitions.
-     */
-    static definitionMap: Map<number, CS_ItemDefinition>;
     /**
      * Set of Counter-Strike sticker categories.
      */
@@ -178,21 +159,14 @@ export declare class CS_Economy {
     /**
      * Set the Counter-Strike items and their definitions.
      * @param {CS_Item[]} items - An array of Counter-Strike items.
-     * @param {CS_ItemDefinition[]} [definitions] - An array of Counter-Strike item definitions (optional).
      */
-    static setItems(items: CS_Item[], definitions?: CS_ItemDefinition[]): void;
+    static initialize(items: CS_Item[]): void;
     /**
      * Get a Counter-Strike item by its ID.
      * @param {number} id - The ID of the Counter-Strike item to retrieve.
      * @returns {CS_Item} - The Counter-Strike item.
      */
     static getById(id: number): CS_Item;
-    /**
-     * Get a Counter-Strike item definition by its ID.
-     * @param {number} id - The ID of the Counter-Strike item definition to retrieve.
-     * @returns {CS_ItemDefinition} - The Counter-Strike item definition.
-     */
-    static getDefById(id: number): CS_ItemDefinition;
 }
 /**
  * Find a Counter-Strike item based on the given predicate.
@@ -208,10 +182,10 @@ export declare function CS_findItem(predicate: CS_EconomyPredicate): CS_Item;
 export declare function CS_filterItems(predicate: CS_EconomyPredicate): CS_Item[];
 /**
  * Check if a Counter-Strike item has a float value.
- * @param {CS_Item} item - The Counter-Strike item to check.
+ * @param {CS_Item} csItem - The Counter-Strike item to check.
  * @returns {boolean} - `true` if the item has a float value, `false` otherwise.
  */
-export declare function CS_hasFloat(item: CS_Item): boolean;
+export declare function CS_hasFloat(csItem: CS_Item): boolean;
 /**
  * Validate a float value for Counter-Strike items.
  * @param {number} float - The float value to validate.
@@ -227,10 +201,10 @@ export declare function CS_validateFloat(float: number, forItem?: CS_Item): bool
 export declare const CS_safeValidateFloat: (float: number, forItem?: CS_Item | undefined) => boolean;
 /**
  * Check if a Counter-Strike item has a seed value.
- * @param {CS_Item} item - The Counter-Strike item to check.
+ * @param {CS_Item} csItem - The Counter-Strike item to check.
  * @returns {boolean} - `true` if the item has a seed value, `false` otherwise.
  */
-export declare function CS_hasSeed(item: CS_Item): boolean;
+export declare function CS_hasSeed(csItem: CS_Item): boolean;
 /**
  * Validate a seed value for Counter-Strike items.
  * @param {number} seed - The seed value to validate.
@@ -246,24 +220,24 @@ export declare function CS_validateSeed(seed: number, forItem?: CS_Item): boolea
 export declare const CS_safeValidateSeed: (seed: number, forItem?: CS_Item | undefined) => boolean;
 /**
  * Check if a Counter-Strike item can have stickers.
- * @param {CS_Item} item - The Counter-Strike item to check.
+ * @param {CS_Item} csItem - The Counter-Strike item to check.
  * @returns {boolean} - `true` if the item can have stickers, `false` otherwise.
  */
-export declare function CS_hasStickers(item: CS_Item): boolean;
+export declare function CS_hasStickers(csItem: CS_Item): boolean;
 /**
  * Validate stickers for a Counter-Strike item.
- * @param {CS_Item} item - The Counter-Strike item for which stickers are being validated.
+ * @param {CS_Item} csItem - The Counter-Strike item for which stickers are being validated.
  * @param {(number | null)[]} stickers - An array of sticker IDs, with null values for empty slots.
  * @param {(number | null)[]} [stickerswear] - An array of sticker wear values (optional).
  * @returns {boolean} - `true` if the stickers are valid, otherwise throws an error.
  */
-export declare function CS_validateStickers(item: CS_Item, stickers: (number | null)[], stickerswear?: (number | null)[]): boolean;
+export declare function CS_validateStickers(csItem: CS_Item, stickers: (number | null)[], stickerswear?: (number | null)[]): boolean;
 /**
  * Check if a Counter-Strike item can have a nametag.
- * @param {CS_Item} item - The Counter-Strike item to check.
+ * @param {CS_Item} csItem - The Counter-Strike item to check.
  * @returns {boolean} - `true` if the item can have a nametag, `false` otherwise.
  */
-export declare function CS_hasNametag(item: CS_Item): boolean;
+export declare function CS_hasNametag(csItem: CS_Item): boolean;
 /**
  * Validate a nametag for a Counter-Strike item.
  * @param {string} nametag - The nametag to validate.
@@ -279,10 +253,10 @@ export declare function CS_validateNametag(nametag: string, forItem?: CS_Item): 
 export declare const CS_safeValidateNametag: (nametag: string, forItem?: CS_Item | undefined) => boolean;
 /**
  * Check if a Counter-Strike item can have StatTrak.
- * @param {CS_Item} item - The Counter-Strike item to check.
+ * @param {CS_Item} csItem - The Counter-Strike item to check.
  * @returns {boolean} - `true` if the item can be StatTrak, `false` otherwise.
  */
-export declare function CS_hasStatTrak(item: CS_Item): boolean;
+export declare function CS_hasStatTrak(csItem: CS_Item): boolean;
 /**
  * Validate StatTrak status for a Counter-Strike item.
  * @param {boolean} stattrak - The StatTrak status to validate.

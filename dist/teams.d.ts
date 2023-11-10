@@ -16,13 +16,13 @@ export declare const CS_TEAM_T: CS_Team;
 export declare const CS_TEAM_CT: CS_Team;
 /**
  * Toggle between Counter-Terrorist (CT) and Terrorist (T) teams.
- * @param {CS_Team} team - The Counter-Strike team to toggle.
+ * @param {CS_Team} csTeam - The Counter-Strike team to toggle.
  * @returns {CS_Team} - The toggled Counter-Strike team.
  */
-export declare function CS_toggleTeam(team: CS_Team): CS_Team;
+export declare function CS_toggleTeam(csTeam: CS_Team): CS_Team;
 /**
  * Get the label for a Counter-Strike team ("ct" for CT, "t" for T).
- * @param {CS_Team} team - The Counter-Strike team.
+ * @param {CS_Team} csTeam - The Counter-Strike team.
  * @returns {string} - The team label.
  */
-export declare function CS_getTeamLabel(team: CS_Team): string;
+export declare function CS_getTeamLabel(csTeam: CS_Team): string;

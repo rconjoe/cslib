@@ -6,7 +6,7 @@
  * A simple Valve Key Value parser.
  * @return {any}
  */
-export function parse(data) {
+export function CS_parseValveKeyValue(data) {
     data = data.replace(/\[[\$!][^\]]+\]/g, "");
     let index = 0;
     function skipWhitespace() {
@@ -24,11 +24,16 @@ export function parse(data) {
         if (data[index] === '"') {
             index += 1;
             let value = "";
-            while (data[index] &&
-                (data[index] !== '"' ||
-                    (data[index] === '"' && data[index - 1] === "\\"))) {
-                value += data[index];
-                index += 1;
+            while (data[index] && data[index] !== '"') {
+                while (data[index] && data[index] === "\\") {
+                    index += 1;
+                    value += data[index];
+                    index += 1;
+                }
+                if (data[index] !== '"') {
+                    value += data[index];
+                    index += 1;
+                }
             }
             if (data[index] !== '"') {
                 throw new Error("Bad end of string.");
@@ -49,7 +54,10 @@ export function parse(data) {
         if (data[index] === "}") {
             return "";
         }
-        console.log(data[index]);
+        console.log(data.substring(Math.max(0, index - 64), index) +
+            data[index] +
+            data.substring(index + 1, Math.min(data.length, index + 63)));
+        console.log("".padStart(64, " ") + "^");
         throw new Error(`Unexpected character at index ${index}.`);
     }
     function parsePairs() {
