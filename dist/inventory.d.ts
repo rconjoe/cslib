@@ -4,13 +4,13 @@ export interface CS_InventoryItem {
     equipped?: boolean;
     equippedCT?: boolean;
     equippedT?: boolean;
-    float?: number;
     id: number;
     nametag?: string;
     seed?: number;
-    stattrak?: boolean;
+    stattrak?: number;
     stickers?: (number | null)[];
-    stickersfloat?: (number | null)[];
+    stickerswear?: (number | null)[];
+    wear?: number;
 }
 export declare class CS_Inventory {
     private items;

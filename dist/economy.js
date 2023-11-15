@@ -3,105 +3,32 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 import { compare, safe } from "./util.js";
-/**
- * Minimum allowed float value for Counter-Strike items.
- */
-export const CS_MIN_FLOAT = 0.000001;
-/**
- * Maximum allowed float value for Counter-Strike items.
- */
-export const CS_MAX_FLOAT = 0.999999;
-/**
- * Minimum float value for Factory New items.
- */
-export const CS_MIN_FACTORY_NEW_FLOAT = CS_MIN_FLOAT;
-/**
- * Maximum float value for Factory New items.
- */
-export const CS_MAX_FACTORY_NEW_FLOAT = 0.07;
-/**
- * Minimum float value for Minimal Wear items.
- */
-export const CS_MIN_MINIMAL_WEAR_FLOAT = 0.070001;
-/**
- * Maximum float value for Minimal Wear items.
- */
-export const CS_MAX_MINIMAL_WEAR_FLOAT = 0.15;
-/**
- * Minimum float value for Field Tested items.
- */
-export const CS_MIN_FIELD_TESTED_FLOAT = 0.150001;
-/**
- * Maximum float value for Field Tested items.
- */
-export const CS_MAX_FIELD_TESTED_FLOAT = 0.37;
-/**
- * Minimum float value for Well Worn items.
- */
-export const CS_MIN_WELL_WORN_FLOAT = 0.370001;
-/**
- * Maximum float value for Well Worn items.
- */
-export const CS_MAX_WELL_WORN_FLOAT = 0.44;
-/**
- * Minimum float value for Battle Scarred items.
- */
-export const CS_MIN_BATTLE_SCARRED_FLOAT = 0.440001;
-/**
- * Maximum float value for Battle Scarred items.
- */
-export const CS_MAX_BATTLE_SCARRED_FLOAT = CS_MAX_FLOAT;
-/**
- * Maximum float value for Battle Scarred items.
- */
+export const CS_MIN_STATTRAK = 0;
+export const CS_MAX_STATTRAK = 999999;
+export const CS_MIN_WEAR = 0.000001;
+export const CS_MAX_WEAR = 0.999999;
+export const CS_MIN_FACTORY_NEW_WEAR = CS_MIN_WEAR;
+export const CS_MAX_FACTORY_NEW_WEAR = 0.07;
+export const CS_MIN_MINIMAL_WEAR_WEAR = 0.070001;
+export const CS_MAX_MINIMAL_WEAR_WEAR = 0.15;
+export const CS_MIN_FIELD_TESTED_WEAR = 0.150001;
+export const CS_MAX_FIELD_TESTED_WEAR = 0.37;
+export const CS_MIN_WELL_WORN_WEAR = 0.370001;
+export const CS_MAX_WELL_WORN_WEAR = 0.44;
+export const CS_MIN_BATTLE_SCARRED_WEAR = 0.440001;
+export const CS_MAX_BATTLE_SCARRED_WEAR = CS_MAX_WEAR;
 export const CS_MIN_SEED = 1;
-/**
- * Maximum seed value for Counter-Strike items.
- */
 export const CS_MAX_SEED = 1000;
-/**
- * Array of Counter-Strike item types that have a float value.
- */
-export const CS_FLOATABLE_ITEMS = ["glove", "melee", "weapon"];
-/**
- * Array of Counter-Strike item types that can have nametags.
- */
+export const CS_WEARABLE_ITEMS = ["glove", "melee", "weapon"];
 export const CS_NAMETAGGABLE_ITEMS = ["melee", "weapon"];
-/**
- * Array of Counter-Strike item types that can have seeds.
- */
 export const CS_SEEDABLE_ITEMS = ["weapon", "melee"];
-/**
- * Array of Counter-Strike item types that can be StatTrak.
- */
 export const CS_STATTRAKABLE_ITEMS = ["melee", "weapon", "musickit"];
-/**
- * Array of Counter-Strike item types that can have stickers.
- */
 export const CS_STICKERABLE_ITEMS = ["weapon"];
-/**
- * Regular expression for validating nametags.
- */
 export const CS_NAMETAG_RE = /^[A-Za-z0-9|][A-Za-z0-9|\s]{0,19}$/;
-/**
- * Minimum float value for stickers.
- */
-export const CS_MIN_STICKER_FLOAT = 0;
-/**
- * Maximum float value for stickers.
- */
-export const CS_MAX_STICKER_FLOAT = 0.9;
-/**
- * For cases that don't have custom rare image.
- */
+export const CS_MIN_STICKER_WEAR = 0;
+export const CS_MAX_STICKER_WEAR = 0.9;
 export const CS_RARE_IMAGE_DEFAULT = 1;
-/**
- * For cases that have custom rare image.
- */
 export const CS_RARE_IMAGE_CUSTOM = 2;
-/**
- * A function that filters Counter-Strike items based on a given predicate.
- */
 function filterItems(predicate) {
     return function filter(item) {
         return (compare(predicate.type, item.type) &&
@@ -109,14 +36,9 @@ function filterItems(predicate) {
             compare(predicate.model, item.model) &&
             compare(predicate.base, item.base) &&
             compare(predicate.category, item.category) &&
-            (predicate.team === undefined ||
-                item.teams === undefined ||
-                item.teams.includes(predicate.team)));
+            (predicate.team === undefined || item.teams === undefined || item.teams.includes(predicate.team)));
     };
 }
-/**
- * Array of category menu items for Counter-Strike items.
- */
 export const CS_CATEGORY_MENU = [
     {
         label: "Pistol",
@@ -179,30 +101,11 @@ export const CS_CATEGORY_MENU = [
         unique: true
     }
 ];
-/**
- * Represents the Counter-Strike Economy.
- */
 class CS_Economy {
-    /**
-     * Array of all Counter-Strike items.
-     */
     static items = [];
-    /**
-     * Map of Counter-Strike item IDs to their corresponding items.
-     */
     static itemMap = new Map();
-    /**
-     * Set of Counter-Strike sticker categories.
-     */
     static categories = new Set();
-    /**
-     * Array of Counter-Strike sticker items.
-     */
     static stickers = [];
-    /**
-     * Set the Counter-Strike items and their definitions.
-     * @param {CS_Item[]} items - An array of Counter-Strike items.
-     */
     static initialize(items) {
         CS_Economy.categories.clear();
         CS_Economy.items = items;
@@ -216,11 +119,6 @@ class CS_Economy {
             }
         });
     }
-    /**
-     * Get a Counter-Strike item by its ID.
-     * @param {number} id - The ID of the Counter-Strike item to retrieve.
-     * @returns {CS_Item} - The Counter-Strike item.
-     */
     static getById(id) {
         const item = CS_Economy.itemMap.get(id);
         if (item === undefined) {
@@ -230,11 +128,6 @@ class CS_Economy {
     }
 }
 export { CS_Economy };
-/**
- * Find a Counter-Strike item based on the given predicate.
- * @param {CS_EconomyPredicate} predicate - A predicate to filter Counter-Strike items.
- * @returns {CS_Item} - The Counter-Strike item matching the predicate.
- */
 export function CS_findItem(predicate) {
     const item = CS_Economy.items.find(filterItems(predicate));
     if (item === undefined) {
@@ -242,11 +135,6 @@ export function CS_findItem(predicate) {
     }
     return item;
 }
-/**
- * Filter Counter-Strike items based on the given predicate.
- * @param {CS_EconomyPredicate} predicate - A predicate to filter Counter-Strike items.
- * @returns {CS_Item[]} - An array of Counter-Strike items matching the predicate.
- */
 export function CS_filterItems(predicate) {
     const items = CS_Economy.items.filter(filterItems(predicate));
     if (items.length === 0) {
@@ -254,52 +142,25 @@ export function CS_filterItems(predicate) {
     }
     return items;
 }
-/**
- * Check if a Counter-Strike item has a float value.
- * @param {CS_Item} csItem - The Counter-Strike item to check.
- * @returns {boolean} - `true` if the item has a float value, `false` otherwise.
- */
-export function CS_hasFloat(csItem) {
-    return CS_FLOATABLE_ITEMS.includes(csItem.type);
+export function CS_hasWear(csItem) {
+    return CS_WEARABLE_ITEMS.includes(csItem.type);
 }
-/**
- * Validate a float value for Counter-Strike items.
- * @param {number} float - The float value to validate.
- * @param {CS_Item} [forItem] - The Counter-Strike item for which the float is being validated (optional).
- * @returns {boolean} - `true` if the float value is valid, otherwise throws an error.
- */
-export function CS_validateFloat(float, forItem) {
-    if (forItem !== undefined && !CS_hasFloat(forItem)) {
-        throw new Error("item does not have float");
+export function CS_validateWear(wear, forItem) {
+    if (forItem !== undefined && !CS_hasWear(forItem)) {
+        throw new Error("item does not have wear");
     }
-    if (String(float).length > String(CS_MAX_FLOAT).length) {
-        throw new Error("invalid float length");
+    if (String(wear).length > String(CS_MAX_WEAR).length) {
+        throw new Error("invalid wear length");
     }
-    if (float < CS_MIN_FLOAT || float > CS_MAX_FLOAT) {
-        throw new Error("invalid float");
+    if (wear < CS_MIN_WEAR || wear > CS_MAX_WEAR) {
+        throw new Error("invalid wear");
     }
     return true;
 }
-/**
- * Safe version of `CS_validateFloat` wrapped in a try-catch block to handle exceptions.
- * @param {number} float - The float value to validate.
- * @returns {boolean} - `true` if the float value is valid, otherwise returns `false`.
- */
-export const CS_safeValidateFloat = safe(CS_validateFloat);
-/**
- * Check if a Counter-Strike item has a seed value.
- * @param {CS_Item} csItem - The Counter-Strike item to check.
- * @returns {boolean} - `true` if the item has a seed value, `false` otherwise.
- */
+export const CS_safeValidateWear = safe(CS_validateWear);
 export function CS_hasSeed(csItem) {
     return CS_SEEDABLE_ITEMS.includes(csItem.type);
 }
-/**
- * Validate a seed value for Counter-Strike items.
- * @param {number} seed - The seed value to validate.
- * @param {CS_Item} [forItem] - The Counter-Strike item for which the seed is being validated (optional).
- * @returns {boolean} - `true` if the seed value is valid, otherwise throws an error.
- */
 export function CS_validateSeed(seed, forItem) {
     if (forItem !== undefined && !CS_hasSeed(forItem)) {
         throw new Error("item does not have seed");
@@ -312,27 +173,10 @@ export function CS_validateSeed(seed, forItem) {
     }
     return true;
 }
-/**
- * Safe version of `CS_validateSeed` wrapped in a try-catch block to handle exceptions.
- * @param {number} seed - The seed value to validate.
- * @returns {boolean} - `true` if the seed value is valid, otherwise returns `false`.
- */
 export const CS_safeValidateSeed = safe(CS_validateSeed);
-/**
- * Check if a Counter-Strike item can have stickers.
- * @param {CS_Item} csItem - The Counter-Strike item to check.
- * @returns {boolean} - `true` if the item can have stickers, `false` otherwise.
- */
 export function CS_hasStickers(csItem) {
     return CS_STICKERABLE_ITEMS.includes(csItem.type);
 }
-/**
- * Validate stickers for a Counter-Strike item.
- * @param {CS_Item} csItem - The Counter-Strike item for which stickers are being validated.
- * @param {(number | null)[]} stickers - An array of sticker IDs, with null values for empty slots.
- * @param {(number | null)[]} [stickerswear] - An array of sticker wear values (optional).
- * @returns {boolean} - `true` if the stickers are valid, otherwise throws an error.
- */
 export function CS_validateStickers(csItem, stickers, stickerswear = []) {
     if (!CS_hasStickers(csItem)) {
         throw new Error("item does not have seed");
@@ -355,27 +199,16 @@ export function CS_validateStickers(csItem, stickers, stickerswear = []) {
             if (String(wear).length > 5) {
                 throw new Error("invalid wear length");
             }
-            if (wear < CS_MIN_STICKER_FLOAT && wear > CS_MAX_STICKER_FLOAT) {
-                throw new Error("invalid wear float");
+            if (wear < CS_MIN_STICKER_WEAR && wear > CS_MAX_STICKER_WEAR) {
+                throw new Error("invalid wear wear");
             }
         }
     }
     return true;
 }
-/**
- * Check if a Counter-Strike item can have a nametag.
- * @param {CS_Item} csItem - The Counter-Strike item to check.
- * @returns {boolean} - `true` if the item can have a nametag, `false` otherwise.
- */
 export function CS_hasNametag(csItem) {
     return CS_NAMETAGGABLE_ITEMS.includes(csItem.type);
 }
-/**
- * Validate a nametag for a Counter-Strike item.
- * @param {string} nametag - The nametag to validate.
- * @param {CS_Item} [forItem] - The Counter-Strike item for which the nametag is being validated (optional).
- * @returns {boolean} - `true` if the nametag is valid, otherwise throws an error.
- */
 export function CS_validateNametag(nametag, forItem) {
     if (forItem !== undefined && !CS_hasNametag(forItem)) {
         throw new Error("invalid nametag");
@@ -385,74 +218,41 @@ export function CS_validateNametag(nametag, forItem) {
     }
     return true;
 }
-/**
- * Safe version of `CS_validateNametag` wrapped in a try-catch block to handle exceptions.
- * @param {string} nametag - The nametag to validate.
- * @returns {boolean} - `true` if the nametag is valid, otherwise returns `false`.
- */
 export const CS_safeValidateNametag = safe(CS_validateNametag);
-/**
- * Check if a Counter-Strike item can have StatTrak.
- * @param {CS_Item} csItem - The Counter-Strike item to check.
- * @returns {boolean} - `true` if the item can be StatTrak, `false` otherwise.
- */
 export function CS_hasStatTrak(csItem) {
     return CS_STATTRAKABLE_ITEMS.includes(csItem.type);
 }
-/**
- * Validate StatTrak status for a Counter-Strike item.
- * @param {boolean} stattrak - The StatTrak status to validate.
- * @param {CS_Item} forItem - The Counter-Strike item for which StatTrak status is being validated.
- * @returns {boolean} - `true` if the StatTrak status is valid, otherwise throws an error.
- */
 export function CS_validateStatTrak(stattrak, forItem) {
-    if (stattrak === true && !CS_hasStatTrak(forItem)) {
+    if (!CS_hasStatTrak(forItem)) {
+        throw new Error("invalid stattrak");
+    }
+    if (stattrak < CS_MIN_STATTRAK || stattrak > CS_MAX_STATTRAK) {
         throw new Error("invalid stattrak");
     }
     return true;
 }
-/**
- * Get the float label for a Counter-Strike item based on its float value.
- * @param {number} float - The float value of the item.
- * @returns {string} - The float label ("FN", "MW", "FT", "WW", or "BS").
- */
-export function CS_getFloatLabel(float) {
-    if (float <= CS_MAX_FACTORY_NEW_FLOAT) {
+export function CS_getWearLabel(wear) {
+    if (wear <= CS_MAX_FACTORY_NEW_WEAR) {
         return "FN";
     }
-    if (float <= CS_MAX_MINIMAL_WEAR_FLOAT) {
+    if (wear <= CS_MAX_MINIMAL_WEAR_WEAR) {
         return "MW";
     }
-    if (float <= CS_MAX_FIELD_TESTED_FLOAT) {
+    if (wear <= CS_MAX_FIELD_TESTED_WEAR) {
         return "FT";
     }
-    if (float <= CS_MAX_WELL_WORN_FLOAT) {
+    if (wear <= CS_MAX_WELL_WORN_WEAR) {
         return "WW";
     }
     return "BS";
 }
-/**
- * Get a list of Counter-Strike sticker categories.
- * @returns {string[]} - An array of Counter-Strike sticker categories.
- */
 export function CS_getStickerCategories() {
     return Array.from(CS_Economy.categories).sort();
 }
-/**
- * Get an array of Counter-Strike sticker items.
- * @returns {CS_Item[]} - An array of Counter-Strike sticker items.
- */
 export function CS_getStickers() {
     return CS_Economy.stickers;
 }
-/**
- * Resolve the image URL for a Counter-Strike item.
- * @param {string} baseUrl - The base URL for images.
- * @param {CS_Item | number} csItem - The Counter-Strike item or its ID.
- * @param {number} [float] - The float value of the item (optional).
- * @returns {string} - The resolved image URL.
- */
-export function CS_resolveItemImage(baseUrl, csItem, float) {
+export function CS_resolveItemImage(baseUrl, csItem, wear) {
     const { base, id, image, localimage } = typeof csItem === "number" ? CS_Economy.getById(csItem) : csItem;
     if (!localimage) {
         if (image.charAt(0) === "/") {
@@ -464,25 +264,19 @@ export function CS_resolveItemImage(baseUrl, csItem, float) {
         return `${baseUrl}/${id}.png`;
     }
     const url = `${baseUrl}/${id}`;
-    if (float === undefined) {
+    if (wear === undefined) {
         return `${url}_light.png`;
     }
     // In the future we need to be more precise on this, I don't think it's
-    // correct.  Please let me know if you know which float each image matches.
-    if (float < 1 / 3) {
+    // correct.  Please let me know if you know which wear each image matches.
+    if (wear < 1 / 3) {
         return `${url}_light.png`;
     }
-    if (float < 2 / 3) {
+    if (wear < 2 / 3) {
         return `${url}_medium.png`;
     }
     return `${url}_heavy.png`;
 }
-/**
- * Resolve the rare image URL for a case.
- * @param {string} baseUrl - The base URL for images.
- * @param {CS_Item | number} csItem - The Counter-Strike item or its ID.
- * @returns {string} - The resolved image URL.
- */
 export function CS_resolveCaseRareImage(baseUrl, csItem) {
     csItem = typeof csItem === "number" ? CS_Economy.getById(csItem) : csItem;
     const { id, type, rareimage } = csItem;

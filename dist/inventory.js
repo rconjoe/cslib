@@ -2,17 +2,9 @@
  *  Copyright (c) Ian Lucas. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-import { CS_Economy, CS_validateFloat, CS_validateNametag, CS_validateSeed, CS_validateStatTrak, CS_validateStickers } from "./economy.js";
+import { CS_Economy, CS_validateWear, CS_validateNametag, CS_validateSeed, CS_validateStatTrak, CS_validateStickers } from "./economy.js";
 import { CS_TEAM_CT, CS_TEAM_T } from "./teams.js";
-export const CS_INVENTORY_EQUIPPABLE_ITEMS = [
-    "weapon",
-    "glove",
-    "melee",
-    "musickit",
-    "agent",
-    "patch",
-    "pin"
-];
+export const CS_INVENTORY_EQUIPPABLE_ITEMS = ["weapon", "glove", "melee", "musickit", "agent", "patch", "pin"];
 export class CS_Inventory {
     items;
     limit;
@@ -28,14 +20,14 @@ export class CS_Inventory {
             return this;
         }
         const csItem = CS_Economy.getById(item.id);
-        if (item.float !== undefined) {
-            CS_validateFloat(item.float, csItem);
+        if (item.wear !== undefined) {
+            CS_validateWear(item.wear, csItem);
         }
         if (item.seed !== undefined) {
             CS_validateSeed(item.seed, csItem);
         }
         if (item.stickers !== undefined) {
-            CS_validateStickers(csItem, item.stickers, item.stickersfloat);
+            CS_validateStickers(csItem, item.stickers, item.stickerswear);
         }
         if (item.nametag !== undefined) {
             CS_validateNametag(item.nametag, csItem);
@@ -104,14 +96,11 @@ export class CS_Inventory {
             }
             const currentCsItem = CS_Economy.getById(current.id);
             if (currentCsItem.type === csItem.type &&
-                (csItem.type !== "weapon" ||
-                    currentCsItem.model === csItem.model)) {
+                (csItem.type !== "weapon" || currentCsItem.model === csItem.model)) {
                 return {
                     ...current,
                     equipped: csTeam === undefined ? undefined : current.equipped,
-                    equippedCT: csTeam === CS_TEAM_CT
-                        ? undefined
-                        : current.equippedCT,
+                    equippedCT: csTeam === CS_TEAM_CT ? undefined : current.equippedCT,
                     equippedT: csTeam === CS_TEAM_T ? undefined : current.equippedT
                 };
             }
@@ -153,14 +142,14 @@ export class CS_MutableInventory {
             return false;
         }
         const csItem = CS_Economy.getById(item.id);
-        if (item.float !== undefined) {
-            CS_validateFloat(item.float, csItem);
+        if (item.wear !== undefined) {
+            CS_validateWear(item.wear, csItem);
         }
         if (item.seed !== undefined) {
             CS_validateSeed(item.seed, csItem);
         }
         if (item.stickers !== undefined) {
-            CS_validateStickers(csItem, item.stickers, item.stickersfloat);
+            CS_validateStickers(csItem, item.stickers, item.stickerswear);
         }
         if (item.nametag !== undefined) {
             CS_validateNametag(item.nametag, csItem);
@@ -218,21 +207,15 @@ export class CS_MutableInventory {
         for (const [index, current] of this.items.entries()) {
             if (index === at) {
                 current.equipped = csTeam === undefined ? true : undefined;
-                current.equippedCT =
-                    csTeam === CS_TEAM_CT ? true : current.equippedCT;
-                current.equippedT =
-                    csTeam === CS_TEAM_T ? true : current.equippedT;
+                current.equippedCT = csTeam === CS_TEAM_CT ? true : current.equippedCT;
+                current.equippedT = csTeam === CS_TEAM_T ? true : current.equippedT;
             }
             const currentCsItem = CS_Economy.getById(current.id);
             if (currentCsItem.type === csItem.type &&
-                (csItem.type !== "weapon" ||
-                    currentCsItem.model === csItem.model)) {
-                current.equipped =
-                    csTeam === undefined ? undefined : current.equipped;
-                current.equippedCT =
-                    csTeam === CS_TEAM_CT ? undefined : current.equippedCT;
-                current.equippedT =
-                    csTeam === CS_TEAM_T ? undefined : current.equippedT;
+                (csItem.type !== "weapon" || currentCsItem.model === csItem.model)) {
+                current.equipped = csTeam === undefined ? undefined : current.equipped;
+                current.equippedCT = csTeam === CS_TEAM_CT ? undefined : current.equippedCT;
+                current.equippedT = csTeam === CS_TEAM_T ? undefined : current.equippedT;
             }
         }
         return true;

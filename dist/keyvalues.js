@@ -2,10 +2,6 @@
  *  Copyright (c) Ian Lucas. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-/**
- * A simple Valve Key Value parser.
- * @return {any}
- */
 export function CS_parseValveKeyValue(data) {
     data = data.replace(/\[[\$!][^\]]+\]/g, "");
     let index = 0;
