@@ -29,10 +29,10 @@ export declare class CS_MutableInventory {
     private limit;
     constructor(items?: CS_InventoryItem[], limit?: number);
     full(): boolean;
-    add(item: CS_InventoryItem): boolean;
-    safeAdd(item: CS_InventoryItem): boolean;
-    remove(at: number): boolean;
-    equip(at: number, csTeam?: CS_Team): boolean;
-    unequip(at: number, csTeam?: CS_Team): boolean;
+    add(item: CS_InventoryItem): this;
+    safeAdd(item: CS_InventoryItem): this;
+    remove(at: number): this;
+    equip(at: number, csTeam?: CS_Team): this;
+    unequip(at: number, csTeam?: CS_Team): this;
     getItems(): CS_InventoryItem[];
 }

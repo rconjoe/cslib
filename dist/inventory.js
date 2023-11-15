@@ -139,7 +139,7 @@ export class CS_MutableInventory {
     }
     add(item) {
         if (this.full()) {
-            return false;
+            return this;
         }
         const csItem = CS_Economy.getById(item.id);
         if (item.wear !== undefined) {
@@ -163,72 +163,75 @@ export class CS_MutableInventory {
             equippedCT: undefined,
             equippedT: undefined
         });
-        return true;
+        return this;
     }
     safeAdd(item) {
         try {
             return this.add(item);
         }
         catch {
-            return false;
+            return this;
         }
     }
     remove(at) {
         if (!this.items[at]) {
-            return false;
+            return this;
         }
         this.items.splice(at, 1);
-        return true;
+        return this;
     }
     equip(at, csTeam) {
         const item = this.items[at];
         if (!item) {
-            return false;
+            return this;
         }
         if (item.equipped) {
-            return false;
+            return this;
         }
         if (csTeam === CS_TEAM_CT && item.equippedCT) {
-            return false;
+            return this;
         }
         if (csTeam === CS_TEAM_T && item.equippedT) {
-            return false;
+            return this;
         }
         const csItem = CS_Economy.getById(item.id);
         if (!CS_INVENTORY_EQUIPPABLE_ITEMS.includes(csItem.type)) {
-            return false;
+            return this;
         }
         if (csTeam === undefined && csItem.teams !== undefined) {
-            return false;
+            return this;
         }
         if (csTeam !== undefined && !csItem.teams?.includes(csTeam)) {
-            return false;
+            return this;
         }
-        for (const [index, current] of this.items.entries()) {
-            if (index === at) {
+        for (let index = 0; index < this.items.length; index++) {
+            const current = this.items[index];
+            if (at === index) {
                 current.equipped = csTeam === undefined ? true : undefined;
                 current.equippedCT = csTeam === CS_TEAM_CT ? true : current.equippedCT;
                 current.equippedT = csTeam === CS_TEAM_T ? true : current.equippedT;
             }
-            const currentCsItem = CS_Economy.getById(current.id);
-            if (currentCsItem.type === csItem.type &&
-                (csItem.type !== "weapon" || currentCsItem.model === csItem.model)) {
-                current.equipped = csTeam === undefined ? undefined : current.equipped;
-                current.equippedCT = csTeam === CS_TEAM_CT ? undefined : current.equippedCT;
-                current.equippedT = csTeam === CS_TEAM_T ? undefined : current.equippedT;
+            else {
+                const currentCsItem = CS_Economy.getById(current.id);
+                if (currentCsItem.type === csItem.type &&
+                    (csItem.type !== "weapon" || currentCsItem.model === csItem.model)) {
+                    current.equipped = csTeam === undefined ? undefined : current.equipped;
+                    current.equippedCT = csTeam === CS_TEAM_CT ? undefined : current.equippedCT;
+                    current.equippedT = csTeam === CS_TEAM_T ? undefined : current.equippedT;
+                }
             }
         }
-        return true;
+        return this;
     }
     unequip(at, csTeam) {
         if (!this.items[at]) {
-            return false;
+            return this;
         }
         const item = this.items[at];
         item.equipped = csTeam === undefined ? undefined : item.equipped;
         item.equippedCT = csTeam === CS_TEAM_CT ? undefined : item.equippedCT;
         item.equippedT = csTeam === CS_TEAM_T ? undefined : item.equippedT;
-        return true;
+        return this;
     }
     getItems() {
         return this.items;
