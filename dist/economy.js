@@ -223,7 +223,7 @@ export function CS_hasStatTrak(csItem) {
     return CS_STATTRAKABLE_ITEMS.includes(csItem.type);
 }
 export function CS_validateStatTrak(stattrak, forItem) {
-    if (!CS_hasStatTrak(forItem)) {
+    if (forItem !== undefined && !CS_hasStatTrak(forItem)) {
         throw new Error("invalid stattrak");
     }
     if (stattrak < CS_MIN_STATTRAK || stattrak > CS_MAX_STATTRAK) {
