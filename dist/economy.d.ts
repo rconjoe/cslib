@@ -76,6 +76,7 @@ export declare function CS_validateNametag(nametag: string, forItem?: CS_Item): 
 export declare const CS_safeValidateNametag: (nametag: string, forItem?: CS_Item | undefined) => boolean;
 export declare function CS_hasStatTrak(csItem: CS_Item): boolean;
 export declare function CS_validateStatTrak(stattrak: number, forItem: CS_Item): boolean;
+export declare const CS_safeValidateStatTrak: (stattrak: number, forItem: CS_Item) => boolean;
 export declare function CS_getWearLabel(wear: number): string;
 export declare function CS_getStickerCategories(): string[];
 export declare function CS_getStickers(): CS_Item[];
