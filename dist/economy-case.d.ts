@@ -1,5 +1,6 @@
 import { CS_Item } from "./economy.js";
 export declare const CS_RARITY_COLORS: Record<string, string>;
+export declare const CS_RARITY_FOR_SOUNDS: Record<string, string>;
 export declare const CS_RARITY_ODDS: Record<string, number>;
 export declare const CS_RARITY_COLOR_DEFAULT = 0;
 export declare const CS_RARITY_COLOR_ORDER: Record<string, number | undefined>;
