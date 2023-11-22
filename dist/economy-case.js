@@ -73,12 +73,12 @@ export function CS_getCaseItems(csCaseItem) {
     }
     return items;
 }
-export function CS_listCaseItems(csCaseItem) {
+export function CS_listCaseItems(csCaseItem, removeSpecialItems = false) {
     const { type, contents, rarecontents } = typeof csCaseItem === "number" ? CS_Economy.getById(csCaseItem) : csCaseItem;
     if (type !== "case") {
         throw new Error("item is not a case");
     }
-    const items = [...(contents || []), ...(rarecontents || [])];
+    const items = [...(contents || []), ...(rarecontents && !removeSpecialItems ? rarecontents : [])];
     return items
         .map((id) => CS_Economy.getById(id))
         .sort((a, b) => {
