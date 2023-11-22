@@ -9,11 +9,12 @@ export declare function CS_randomInt(min: number, max: number): number;
 export declare function CS_getCaseItems(csCaseItem: CS_Item | number): Record<string, CS_Item[]>;
 export declare function CS_listCaseItems(csCaseItem: CS_Item | number): CS_Item[];
 export declare function CS_roll(csCaseItem: CS_Item | number): {
-    csItem: CS_Item;
     attributes: {
         seed: number | undefined;
         wear: number | undefined;
         stattrak: number | undefined;
     };
+    csItem: CS_Item;
+    rarity: string;
     special: boolean;
 };
