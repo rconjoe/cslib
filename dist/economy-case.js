@@ -19,6 +19,16 @@ export const CS_RARITY_ODDS = {
     ancient: 0.0064,
     special: 0.0016
 };
+export const CS_RARITY_COLOR_DEFAULT = 0;
+export const CS_RARITY_COLOR_ORDER = {
+    "#b0c3d9": 1,
+    "#5e98d9": 2,
+    "#4b69ff": 3,
+    "#8847ff": 4,
+    "#d32ce6": 5,
+    "#eb4b4b": 6,
+    "#e4ae39": 7
+};
 export const CS_RARITY_ORDER = ["common", "mythical", "legendary", "ancient", "special"];
 export function CS_randomFloat(min, max) {
     return Math.random() * (max - min + 1) + min;
@@ -28,7 +38,8 @@ export function CS_randomInt(min, max) {
     max = Math.floor(max);
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-export function CS_roll({ type, contents, rarecontents }) {
+export function CS_getCaseItems(csCaseItem) {
+    const { type, contents, rarecontents } = typeof csCaseItem === "number" ? CS_Economy.getById(csCaseItem) : csCaseItem;
     if (type !== "case") {
         throw new Error("item is not a case");
     }
@@ -51,6 +62,23 @@ export function CS_roll({ type, contents, rarecontents }) {
             items[rarity].push(csItem);
         }
     }
+    return items;
+}
+export function CS_listCaseItems(csCaseItem) {
+    const { type, contents, rarecontents } = typeof csCaseItem === "number" ? CS_Economy.getById(csCaseItem) : csCaseItem;
+    if (type !== "case") {
+        throw new Error("item is not a case");
+    }
+    const items = [...(contents || []), ...(rarecontents || [])];
+    return items
+        .map((id) => CS_Economy.getById(id))
+        .sort((a, b) => {
+        return ((CS_RARITY_COLOR_ORDER[a.rarity] ?? CS_RARITY_COLOR_DEFAULT) -
+            (CS_RARITY_COLOR_ORDER[b.rarity] ?? CS_RARITY_COLOR_DEFAULT));
+    });
+}
+export function CS_roll(csCaseItem) {
+    const items = CS_getCaseItems(csCaseItem);
     const presentRarities = Object.keys(items);
     const total = presentRarities.reduce((acc, rarity) => acc + CS_RARITY_ODDS[rarity], 0);
     const entries = CS_RARITY_ORDER.filter((rarity) => presentRarities.includes(rarity)).map((rarity) => [rarity, CS_RARITY_ODDS[rarity] / total]);
