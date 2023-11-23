@@ -124,7 +124,7 @@ export class CS_Inventory {
             return item;
         }), this.limit);
     }
-    unlockCase(caseIndex, keyIndex) {
+    unlockCase(caseIndex, keyIndex, rolledItem) {
         if (!this.items[caseIndex] || (keyIndex !== undefined && !this.items[keyIndex])) {
             throw new Error("invalid inventory item(s).");
         }
@@ -142,16 +142,16 @@ export class CS_Inventory {
         if (caseItem.keys === undefined && keyItem !== undefined) {
             throw new Error("case does not need a key.");
         }
-        const roll = CS_roll(caseItem);
+        rolledItem = rolledItem !== undefined ? rolledItem : CS_roll(caseItem);
         return {
             state: new CS_Inventory([
                 {
-                    id: roll.csItem.id,
-                    ...roll.attributes
+                    id: rolledItem.csItem.id,
+                    ...rolledItem.attributes
                 },
                 ...this.items.filter((_, index) => index !== caseIndex && index !== keyIndex)
             ], this.limit),
-            roll
+            rolledItem
         };
     }
     getItem(index) {
@@ -270,7 +270,7 @@ export class CS_MutableInventory {
         item.equippedT = csTeam === CS_TEAM_T ? undefined : item.equippedT;
         return this;
     }
-    unlockCase(caseIndex, keyIndex) {
+    unlockCase(caseIndex, keyIndex, rolledItem) {
         if (!this.items[caseIndex] || (keyIndex !== undefined && !this.items[keyIndex])) {
             throw new Error("invalid inventory item(s).");
         }
@@ -288,19 +288,19 @@ export class CS_MutableInventory {
         if (caseItem.keys === undefined && keyItem !== undefined) {
             throw new Error("case does not need a key.");
         }
-        const roll = CS_roll(caseItem);
+        rolledItem = rolledItem !== undefined ? rolledItem : CS_roll(caseItem);
         keyIndex = keyIndex !== undefined ? (keyIndex > caseIndex ? keyIndex : keyIndex - 1) : undefined;
         this.items.splice(caseIndex, 1);
         if (keyIndex !== undefined) {
             this.items.splice(keyIndex, 1);
         }
         this.items.unshift({
-            id: roll.csItem.id,
-            ...roll.attributes
+            id: rolledItem.csItem.id,
+            ...rolledItem.attributes
         });
         return {
             state: this,
-            roll
+            rolledItem
         };
     }
     getItem(index) {
