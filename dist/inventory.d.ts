@@ -1,3 +1,4 @@
+import { CS_roll } from "./economy-case.js";
 import { CS_Team } from "./teams.js";
 export declare const CS_INVENTORY_EQUIPPABLE_ITEMS: string[];
 export interface CS_InventoryItem {
@@ -22,7 +23,10 @@ export declare class CS_Inventory {
     remove(at: number): CS_Inventory;
     equip(at: number, csTeam?: CS_Team): CS_Inventory;
     unequip(at: number, csTeam?: CS_Team): CS_Inventory;
-    unlockCase(caseIndex: number, keyIndex?: number): CS_Inventory;
+    unlockCase(caseIndex: number, keyIndex?: number): {
+        state: CS_Inventory;
+        roll: ReturnType<typeof CS_roll>;
+    };
     getItem(index: number): CS_InventoryItem | undefined;
     getItems(): CS_InventoryItem[];
     size(): number;
@@ -37,7 +41,10 @@ export declare class CS_MutableInventory {
     remove(at: number): this;
     equip(at: number, csTeam?: CS_Team): this;
     unequip(at: number, csTeam?: CS_Team): this;
-    unlockCase(caseIndex: number, keyIndex?: number): this;
+    unlockCase(caseIndex: number, keyIndex?: number): {
+        state: CS_MutableInventory;
+        roll: ReturnType<typeof CS_roll>;
+    };
     getItem(index: number): CS_InventoryItem | undefined;
     getItems(): CS_InventoryItem[];
     size(): number;

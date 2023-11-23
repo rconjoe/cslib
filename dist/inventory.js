@@ -143,13 +143,16 @@ export class CS_Inventory {
             throw new Error("case does not need a key.");
         }
         const roll = CS_roll(caseItem);
-        return new CS_Inventory([
-            {
-                id: roll.csItem.id,
-                ...roll.attributes
-            },
-            ...this.items.filter((_, index) => index !== caseIndex && index !== keyIndex)
-        ], this.limit);
+        return {
+            state: new CS_Inventory([
+                {
+                    id: roll.csItem.id,
+                    ...roll.attributes
+                },
+                ...this.items.filter((_, index) => index !== caseIndex && index !== keyIndex)
+            ], this.limit),
+            roll
+        };
     }
     getItem(index) {
         return this.items[index];
@@ -295,7 +298,10 @@ export class CS_MutableInventory {
             id: roll.csItem.id,
             ...roll.attributes
         });
-        return this;
+        return {
+            state: this,
+            roll
+        };
     }
     getItem(index) {
         return this.items[index];
