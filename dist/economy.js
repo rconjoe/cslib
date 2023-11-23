@@ -99,6 +99,11 @@ export const CS_CATEGORY_MENU = [
         label: "Case",
         category: "case",
         unique: true
+    },
+    {
+        label: "Key",
+        category: "key",
+        unique: true
     }
 ];
 class CS_Economy {
