@@ -22,7 +22,10 @@ export declare class CS_Inventory {
     remove(at: number): CS_Inventory;
     equip(at: number, csTeam?: CS_Team): CS_Inventory;
     unequip(at: number, csTeam?: CS_Team): CS_Inventory;
+    unlockCase(caseIndex: number, keyIndex?: number): CS_Inventory;
+    getItem(index: number): CS_InventoryItem | undefined;
     getItems(): CS_InventoryItem[];
+    size(): number;
 }
 export declare class CS_MutableInventory {
     private items;
@@ -34,5 +37,8 @@ export declare class CS_MutableInventory {
     remove(at: number): this;
     equip(at: number, csTeam?: CS_Team): this;
     unequip(at: number, csTeam?: CS_Team): this;
+    unlockCase(caseIndex: number, keyIndex?: number): this;
+    getItem(index: number): CS_InventoryItem | undefined;
     getItems(): CS_InventoryItem[];
+    size(): number;
 }
