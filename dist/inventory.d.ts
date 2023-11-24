@@ -27,6 +27,7 @@ export declare class CS_Inventory {
         state: CS_Inventory;
         rolledItem: ReturnType<typeof CS_roll>;
     };
+    renameItem(toolIndex: number, targetIndex: number, nametag?: string): CS_Inventory;
     getItem(index: number): CS_InventoryItem | undefined;
     getItems(): CS_InventoryItem[];
     size(): number;
@@ -45,6 +46,7 @@ export declare class CS_MutableInventory {
         state: CS_MutableInventory;
         rolledItem: ReturnType<typeof CS_roll>;
     };
+    renameItem(toolIndex: number, targetIndex: number, nametag?: string): this;
     getItem(index: number): CS_InventoryItem | undefined;
     getItems(): CS_InventoryItem[];
     size(): number;

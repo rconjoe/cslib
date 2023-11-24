@@ -46,6 +46,7 @@ export declare const CS_MIN_STICKER_WEAR = 0;
 export declare const CS_MAX_STICKER_WEAR = 0.9;
 export declare const CS_RARE_IMAGE_DEFAULT = 1;
 export declare const CS_RARE_IMAGE_CUSTOM = 2;
+export declare const CS_NAMETAG_TOOL_DEF = 1200;
 type CS_EconomyPredicate = Partial<CS_Item> & {
     team?: CS_Team;
 };
