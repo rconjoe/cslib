@@ -91,6 +91,11 @@ export const CS_CATEGORY_MENU = [
         unique: true
     },
     {
+        label: "Graffiti",
+        category: "graffiti",
+        unique: true
+    },
+    {
         label: "Pin",
         category: "pin",
         unique: true

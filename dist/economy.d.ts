@@ -17,7 +17,8 @@ export interface CS_Item {
     rareimage?: number;
     rarity: string;
     teams?: CS_Team[];
-    type: "agent" | "case" | "glove" | "key" | "melee" | "musickit" | "patch" | "pin" | "sticker" | "weapon";
+    tint?: number;
+    type: "agent" | "case" | "glove" | "graffiti" | "key" | "melee" | "musickit" | "patch" | "pin" | "sticker" | "weapon";
 }
 export declare const CS_MIN_STATTRAK = 0;
 export declare const CS_MAX_STATTRAK = 999999;
