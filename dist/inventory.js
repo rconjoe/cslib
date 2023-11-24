@@ -5,7 +5,16 @@
 import { CS_roll } from "./economy-case.js";
 import { CS_Economy, CS_validateWear, CS_validateNametag, CS_validateSeed, CS_validateStatTrak, CS_validateStickers } from "./economy.js";
 import { CS_TEAM_CT, CS_TEAM_T } from "./teams.js";
-export const CS_INVENTORY_EQUIPPABLE_ITEMS = ["weapon", "glove", "melee", "musickit", "agent", "patch", "pin", "spray"];
+export const CS_INVENTORY_EQUIPPABLE_ITEMS = [
+    "agent",
+    "glove",
+    "graffiti",
+    "melee",
+    "musickit",
+    "patch",
+    "pin",
+    "weapon"
+];
 export class CS_Inventory {
     items;
     limit;

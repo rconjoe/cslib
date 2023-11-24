@@ -109,6 +109,11 @@ export const CS_CATEGORY_MENU = [
         label: "Key",
         category: "key",
         unique: true
+    },
+    {
+        label: "Tool",
+        category: "tool",
+        unique: true
     }
 ];
 class CS_Economy {

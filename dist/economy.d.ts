@@ -18,7 +18,7 @@ export interface CS_Item {
     rarity: string;
     teams?: CS_Team[];
     tint?: number;
-    type: "agent" | "case" | "glove" | "graffiti" | "key" | "melee" | "musickit" | "patch" | "pin" | "sticker" | "weapon";
+    type: "agent" | "case" | "glove" | "graffiti" | "key" | "melee" | "musickit" | "patch" | "pin" | "sticker" | "tool" | "weapon";
 }
 export declare const CS_MIN_STATTRAK = 0;
 export declare const CS_MAX_STATTRAK = 999999;
