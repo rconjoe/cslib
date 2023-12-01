@@ -1,4 +1,4 @@
-import { CS_roll } from "./economy-case.js";
+import { CS_unlockCase } from "./economy-case.js";
 import { CS_Team } from "./teams.js";
 export declare const CS_INVENTORY_EQUIPPABLE_ITEMS: string[];
 export interface CS_InventoryItem {
@@ -18,36 +18,23 @@ export declare class CS_Inventory {
     private limit;
     constructor(items?: CS_InventoryItem[], limit?: number);
     full(): boolean;
-    add(item: CS_InventoryItem): CS_Inventory;
-    safeAdd(item: CS_InventoryItem): CS_Inventory;
-    remove(at: number): CS_Inventory;
-    equip(at: number, csTeam?: CS_Team): CS_Inventory;
-    unequip(at: number, csTeam?: CS_Team): CS_Inventory;
-    unlockCase(caseIndex: number, keyIndex?: number, rolledItem?: ReturnType<typeof CS_roll>): {
-        state: CS_Inventory;
-        rolledItem: ReturnType<typeof CS_roll>;
-    };
-    renameItem(toolIndex: number, targetIndex: number, nametag?: string): CS_Inventory;
-    getItem(index: number): CS_InventoryItem | undefined;
-    getItems(): CS_InventoryItem[];
-    size(): number;
-}
-export declare class CS_MutableInventory {
-    private items;
-    private limit;
-    constructor(items?: CS_InventoryItem[], limit?: number);
-    full(): boolean;
-    add(item: CS_InventoryItem): this;
-    safeAdd(item: CS_InventoryItem): this;
-    remove(at: number): this;
-    equip(at: number, csTeam?: CS_Team): this;
-    unequip(at: number, csTeam?: CS_Team): this;
-    unlockCase(caseIndex: number, keyIndex?: number, rolledItem?: ReturnType<typeof CS_roll>): {
-        state: CS_MutableInventory;
-        rolledItem: ReturnType<typeof CS_roll>;
+    add(inventoryItem: CS_InventoryItem): this;
+    safeAdd(inventoryItem: CS_InventoryItem): this;
+    remove(index: number): this;
+    equip(index: number, team?: CS_Team): this;
+    unequip(index: number, team?: CS_Team): this;
+    unlockCase(caseIndex: number, keyIndex?: number, unlockedItem?: ReturnType<typeof CS_unlockCase>): {
+        attributes: {
+            seed: number | undefined;
+            stattrak: number | undefined;
+            wear: number | undefined;
+        };
+        item: import("./economy.js").CS_Item;
+        rarity: string;
+        special: boolean;
     };
     renameItem(toolIndex: number, targetIndex: number, nametag?: string): this;
-    getItem(index: number): CS_InventoryItem | undefined;
-    getItems(): CS_InventoryItem[];
+    get(index: number): CS_InventoryItem | undefined;
+    getAll(): CS_InventoryItem[];
     size(): number;
 }

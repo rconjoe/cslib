@@ -5,8 +5,11 @@
 import { compare, safe } from "./util.js";
 export const CS_MIN_STATTRAK = 0;
 export const CS_MAX_STATTRAK = 999999;
-export const CS_MIN_WEAR = 0.000001;
-export const CS_MAX_WEAR = 0.999999;
+export const CS_WEAR_FACTOR = 0.000001;
+export const CS_MIN_WEAR = 0;
+export const CS_MAX_WEAR = 1;
+export const CS_DEFAULT_MIN_WEAR = 0.06;
+export const CS_DEFAULT_MAX_WEAR = 0.8;
 export const CS_MIN_FACTORY_NEW_WEAR = CS_MIN_WEAR;
 export const CS_MAX_FACTORY_NEW_WEAR = 0.07;
 export const CS_MIN_MINIMAL_WEAR_WEAR = 0.070001;
@@ -27,8 +30,8 @@ export const CS_STICKERABLE_ITEMS = ["weapon"];
 export const CS_NAMETAG_RE = /^[A-Za-z0-9|][A-Za-z0-9|\s]{0,19}$/;
 export const CS_MIN_STICKER_WEAR = 0;
 export const CS_MAX_STICKER_WEAR = 0.9;
-export const CS_RARE_IMAGE_DEFAULT = 1;
-export const CS_RARE_IMAGE_CUSTOM = 2;
+export const CS_SPECIAL_ITEM_IMAGE_DEFAULT = 1;
+export const CS_SPECIAL_ITEM_IMAGE_CUSTOM = 2;
 export const CS_NAMETAG_TOOL_DEF = 1200;
 function filterItems(predicate) {
     return function filter(item) {
@@ -40,84 +43,7 @@ function filterItems(predicate) {
             (predicate.team === undefined || item.teams === undefined || item.teams.includes(predicate.team)));
     };
 }
-export const CS_CATEGORY_MENU = [
-    {
-        label: "Pistol",
-        category: "secondary",
-        unique: false
-    },
-    {
-        label: "SMG",
-        category: "smg",
-        unique: false
-    },
-    {
-        label: "Heavy",
-        category: "heavy",
-        unique: false
-    },
-    {
-        label: "Rifle",
-        category: "rifle",
-        unique: false
-    },
-    {
-        label: "Knife",
-        category: "melee",
-        unique: true
-    },
-    {
-        label: "Glove",
-        category: "glove",
-        unique: true
-    },
-    {
-        label: "Sticker",
-        category: "sticker",
-        unique: true
-    },
-    {
-        label: "Agent",
-        category: "agent",
-        unique: true
-    },
-    {
-        label: "Patch",
-        category: "patch",
-        unique: true
-    },
-    {
-        label: "Music Kit",
-        category: "musickit",
-        unique: true
-    },
-    {
-        label: "Graffiti",
-        category: "graffiti",
-        unique: true
-    },
-    {
-        label: "Pin",
-        category: "pin",
-        unique: true
-    },
-    {
-        label: "Case",
-        category: "case",
-        unique: true
-    },
-    {
-        label: "Key",
-        category: "key",
-        unique: true
-    },
-    {
-        label: "Tool",
-        category: "tool",
-        unique: true
-    }
-];
-class CS_Economy {
+export class CS_Economy {
     static items = [];
     static itemMap = new Map();
     static categories = new Set();
@@ -129,7 +55,7 @@ class CS_Economy {
         CS_Economy.stickers = [];
         items.forEach((item) => {
             CS_Economy.itemMap.set(item.id, item);
-            if (item.type === "sticker") {
+            if (item.type === "sticker" && item.category !== undefined) {
                 CS_Economy.stickers.push(item);
                 CS_Economy.categories.add(item.category);
             }
@@ -143,7 +69,6 @@ class CS_Economy {
         return item;
     }
 }
-export { CS_Economy };
 export function CS_findItem(predicate) {
     const item = CS_Economy.items.find(filterItems(predicate));
     if (item === undefined) {
@@ -158,24 +83,32 @@ export function CS_filterItems(predicate) {
     }
     return items;
 }
-export function CS_hasWear(csItem) {
-    return CS_WEARABLE_ITEMS.includes(csItem.type);
+export function CS_hasWear(item) {
+    return CS_WEARABLE_ITEMS.includes(item.type);
 }
 export function CS_validateWear(wear, forItem) {
     if (forItem !== undefined && !CS_hasWear(forItem)) {
         throw new Error("item does not have wear");
     }
-    if (String(wear).length > String(CS_MAX_WEAR).length) {
+    if (String(wear).length > String(CS_WEAR_FACTOR).length) {
         throw new Error("invalid wear length");
     }
     if (wear < CS_MIN_WEAR || wear > CS_MAX_WEAR) {
         throw new Error("invalid wear");
     }
+    if (forItem !== undefined) {
+        if (forItem.wearmin !== undefined && wear < forItem.wearmin) {
+            throw new Error("invalid wear");
+        }
+        if (forItem.wearmax !== undefined && wear > forItem.wearmax) {
+            throw new Error("invalid wear");
+        }
+    }
     return true;
 }
 export const CS_safeValidateWear = safe(CS_validateWear);
-export function CS_hasSeed(csItem) {
-    return CS_SEEDABLE_ITEMS.includes(csItem.type);
+export function CS_hasSeed(item) {
+    return CS_SEEDABLE_ITEMS.includes(item.type);
 }
 export function CS_validateSeed(seed, forItem) {
     if (forItem !== undefined && !CS_hasSeed(forItem)) {
@@ -190,11 +123,11 @@ export function CS_validateSeed(seed, forItem) {
     return true;
 }
 export const CS_safeValidateSeed = safe(CS_validateSeed);
-export function CS_hasStickers(csItem) {
-    return CS_STICKERABLE_ITEMS.includes(csItem.type);
+export function CS_hasStickers(item) {
+    return CS_STICKERABLE_ITEMS.includes(item.type);
 }
-export function CS_validateStickers(csItem, stickers, stickerswear = []) {
-    if (!CS_hasStickers(csItem)) {
+export function CS_validateStickers(item, stickers, stickerswear = []) {
+    if (!CS_hasStickers(item)) {
         throw new Error("item does not have seed");
     }
     if (stickers.length > 4) {
@@ -222,8 +155,8 @@ export function CS_validateStickers(csItem, stickers, stickerswear = []) {
     }
     return true;
 }
-export function CS_hasNametag(csItem) {
-    return CS_NAMETAGGABLE_ITEMS.includes(csItem.type);
+export function CS_hasNametag(item) {
+    return CS_NAMETAGGABLE_ITEMS.includes(item.type);
 }
 export function CS_validateNametag(nametag, forItem) {
     if (forItem !== undefined && !CS_hasNametag(forItem)) {
@@ -235,8 +168,8 @@ export function CS_validateNametag(nametag, forItem) {
     return true;
 }
 export const CS_safeValidateNametag = safe(CS_validateNametag);
-export function CS_hasStatTrak(csItem) {
-    return CS_STATTRAKABLE_ITEMS.includes(csItem.type);
+export function CS_hasStatTrak(item) {
+    return CS_STATTRAKABLE_ITEMS.includes(item.type);
 }
 export function CS_validateStatTrak(stattrak, forItem) {
     if (forItem !== undefined && !CS_hasStatTrak(forItem)) {
@@ -269,41 +202,39 @@ export function CS_getStickerCategories() {
 export function CS_getStickers() {
     return CS_Economy.stickers;
 }
-export function CS_resolveItemImage(baseUrl, csItem, wear) {
-    const { base, id, image, localimage } = typeof csItem === "number" ? CS_Economy.getById(csItem) : csItem;
-    if (!localimage) {
-        if (image.charAt(0) === "/") {
-            return `${baseUrl}${image}`;
-        }
-        return image;
-    }
-    if (base) {
-        return `${baseUrl}/${id}.png`;
-    }
+export function CS_resolveItemImage(baseUrl, item, wear) {
+    const { base, id, image, localimage } = typeof item === "number" ? CS_Economy.getById(item) : item;
     const url = `${baseUrl}/${id}`;
-    if (wear === undefined) {
-        return `${url}_light.png`;
+    switch (true) {
+        case !localimage && image.charAt(0) === "/":
+            return `${baseUrl}${image}`;
+        case !localimage:
+            return image;
+        case base:
+            return `${baseUrl}/${id}.png`;
+        case wear === undefined:
+            return `${url}_light.png`;
+        // In the future we need to be more precise on this, I don't think it's
+        // correct. Please let me know if you know which wear each image
+        // matches.
+        case wear !== undefined && wear < 1 / 3:
+            return `${url}_light.png`;
+        case wear !== undefined && wear < 2 / 3:
+            return `${url}_medium.png`;
+        default:
+            return `${url}_heavy.png`;
     }
-    // In the future we need to be more precise on this, I don't think it's
-    // correct.  Please let me know if you know which wear each image matches.
-    if (wear < 1 / 3) {
-        return `${url}_light.png`;
-    }
-    if (wear < 2 / 3) {
-        return `${url}_medium.png`;
-    }
-    return `${url}_heavy.png`;
 }
-export function CS_resolveCaseRareImage(baseUrl, csItem) {
-    csItem = typeof csItem === "number" ? CS_Economy.getById(csItem) : csItem;
-    const { id, type, rareimage } = csItem;
+export function CS_resolveCaseSpecialItemImage(baseUrl, item) {
+    item = typeof item === "number" ? CS_Economy.getById(item) : item;
+    const { id, type, specialimage } = item;
     if (type !== "case") {
         throw new Error("item is not a case");
     }
-    if (rareimage === undefined) {
-        throw new Error("case does not have rare items");
+    if (specialimage === undefined) {
+        throw new Error("case does not have special items");
     }
-    if (rareimage === CS_RARE_IMAGE_CUSTOM) {
+    if (specialimage === CS_SPECIAL_ITEM_IMAGE_CUSTOM) {
         return `${baseUrl}/${id}_rare.png`;
     }
     return `${baseUrl}/default_rare_item.png`;
