@@ -121,7 +121,7 @@ export function CS_unlockCase(csCaseItem) {
                     .substring(0, CS_WEAR_FACTOR.toString().length))
                 : undefined
         },
-        item: item.id,
+        id: item.id,
         rarity: CS_RARITY_FOR_SOUNDS[item.rarity],
         special: rollRarity === "special"
     };

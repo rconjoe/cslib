@@ -19,7 +19,7 @@ export declare function CS_unlockCase(csCaseItem: CS_Item | number): {
         stattrak: number | undefined;
         wear: number | undefined;
     };
-    item: number;
+    id: number;
     rarity: string;
     special: boolean;
 };
