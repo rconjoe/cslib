@@ -2,7 +2,7 @@
  *  Copyright (c) Ian Lucas. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-import { CS_Economy, CS_MAX_SEED, CS_MAX_WEAR, CS_MIN_SEED, CS_MIN_WEAR, CS_hasSeed, CS_hasStatTrak, CS_hasWear } from "./economy.js";
+import { CS_Economy, CS_MAX_SEED, CS_MAX_WEAR, CS_MIN_SEED, CS_MIN_WEAR, CS_WEAR_FACTOR, CS_hasSeed, CS_hasStatTrak, CS_hasWear } from "./economy.js";
 export const CS_RARITY_COLORS = {
     "#b0c3d9": "common",
     "#5e98d9": "uncommon",
@@ -118,10 +118,10 @@ export function CS_unlockCase(csCaseItem) {
             wear: CS_hasWear(item)
                 ? Number(CS_randomFloat(item.wearmin ?? CS_MIN_WEAR, item.wearmax ?? CS_MAX_WEAR)
                     .toString()
-                    .substring(0, CS_MAX_WEAR.toString().length))
+                    .substring(0, CS_WEAR_FACTOR.toString().length))
                 : undefined
         },
-        item,
+        item: item.id,
         rarity: CS_RARITY_FOR_SOUNDS[item.rarity],
         special: rollRarity === "special"
     };

@@ -29,7 +29,7 @@ export declare class CS_Inventory {
             stattrak: number | undefined;
             wear: number | undefined;
         };
-        item: import("./economy.js").CS_Item;
+        item: number;
         rarity: string;
         special: boolean;
     };
