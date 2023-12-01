@@ -77,12 +77,12 @@ export function CS_getCaseContents(caseItem) {
     }
     return items;
 }
-export function CS_listCaseContents(caseItem, hideRareContents = false) {
+export function CS_listCaseContents(caseItem, hideSpecialContents = false) {
     const { type, contents, specialcontents } = typeof caseItem === "number" ? CS_Economy.getById(caseItem) : caseItem;
     if (type !== "case" || contents === undefined) {
         throw new Error("item is not a case");
     }
-    const items = [...contents, ...(!hideRareContents && specialcontents !== undefined ? specialcontents : [])];
+    const items = [...contents, ...(!hideSpecialContents && specialcontents !== undefined ? specialcontents : [])];
     return items
         .map((id) => CS_Economy.getById(id))
         .sort((a, b) => {

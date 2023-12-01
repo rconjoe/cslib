@@ -9,7 +9,7 @@ export declare const CS_STATTRAK_ODD: number;
 export declare function CS_randomFloat(min: number, max: number): number;
 export declare function CS_randomInt(min: number, max: number): number;
 export declare function CS_getCaseContents(caseItem: CS_Item | number): Record<string, CS_Item[]>;
-export declare function CS_listCaseContents(caseItem: CS_Item | number, hideRareContents?: boolean): CS_Item[];
+export declare function CS_listCaseContents(caseItem: CS_Item | number, hideSpecialContents?: boolean): CS_Item[];
 /**
  * @see https://www.csgo.com.cn/news/gamebroad/20170911/206155.shtml
  */
