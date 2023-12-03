@@ -15,7 +15,7 @@ export interface CS_InventoryItem {
 }
 export declare class CS_Inventory {
     private items;
-    private limit;
+    limit: number;
     constructor(items?: CS_InventoryItem[], limit?: number);
     full(): boolean;
     add(inventoryItem: CS_InventoryItem): this;
