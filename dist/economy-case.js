@@ -2,7 +2,7 @@
  *  Copyright (c) Ian Lucas. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-import { CS_Economy, CS_MAX_SEED, CS_MAX_WEAR, CS_MIN_SEED, CS_MIN_WEAR, CS_WEAR_FACTOR, CS_hasSeed, CS_hasStatTrak, CS_hasWear } from "./economy.js";
+import { CS_Economy, CS_MAX_SEED, CS_MAX_WEAR, CS_MIN_SEED, CS_MIN_WEAR, CS_WEAR_FACTOR, CS_hasSeed, CS_hasStatTrak, CS_hasWear, CS_validateSeed, CS_validateStatTrak, CS_validateWear } from "./economy.js";
 export const CS_RARITY_COLORS = {
     "#b0c3d9": "common",
     "#5e98d9": "uncommon",
@@ -93,8 +93,8 @@ export function CS_listCaseContents(caseItem, hideSpecialContents = false) {
 /**
  * @see https://www.csgo.com.cn/news/gamebroad/20170911/206155.shtml
  */
-export function CS_unlockCase(csCaseItem) {
-    const items = CS_getCaseContents(csCaseItem);
+export function CS_unlockCase(caseItem) {
+    const items = CS_getCaseContents(caseItem);
     const keys = Object.keys(items);
     const rarities = CS_RARITY_ORDER.filter((rarity) => keys.includes(rarity));
     const odds = rarities.map((_, index) => CS_BASE_ODD / Math.pow(5, index));
@@ -125,4 +125,23 @@ export function CS_unlockCase(csCaseItem) {
         rarity: CS_RARITY_FOR_SOUNDS[item.rarity],
         special: rollRarity === "special"
     };
+}
+export function CS_validateUnlockedItem(caseItem, { id, attributes: { seed, stattrak, wear } }) {
+    caseItem = typeof caseItem === "number" ? CS_Economy.getById(caseItem) : caseItem;
+    if (caseItem.type !== "case") {
+        throw new Error("item is not a case.");
+    }
+    if (!caseItem.contents?.includes(id) && !caseItem.specialcontents?.includes(id)) {
+        throw new Error("unlocked item is not from this case.");
+    }
+    const item = CS_Economy.getById(id);
+    if (seed !== undefined) {
+        CS_validateSeed(seed, item);
+    }
+    if (stattrak !== undefined) {
+        CS_validateStatTrak(stattrak, item);
+    }
+    if (wear !== undefined) {
+        CS_validateWear(wear, item);
+    }
 }

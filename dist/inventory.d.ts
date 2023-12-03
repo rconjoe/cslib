@@ -19,22 +19,14 @@ export declare class CS_Inventory {
     constructor(items?: CS_InventoryItem[], limit?: number);
     full(): boolean;
     add(inventoryItem: CS_InventoryItem): this;
-    safeAdd(inventoryItem: CS_InventoryItem): this;
-    remove(index: number): this;
+    addWithNametag(toolIndex: number, itemId: number, nametag: string): this;
     equip(index: number, team?: CS_Team): this;
     unequip(index: number, team?: CS_Team): this;
-    unlockCase(caseIndex: number, keyIndex?: number, unlockedItem?: ReturnType<typeof CS_unlockCase>): {
-        attributes: {
-            seed: number | undefined;
-            stattrak: number | undefined;
-            wear: number | undefined;
-        };
-        id: number;
-        rarity: string;
-        special: boolean;
-    };
+    unlockCase(unlockedItem: ReturnType<typeof CS_unlockCase>, caseIndex: number, keyIndex?: number): this;
     renameItem(toolIndex: number, targetIndex: number, nametag?: string): this;
     get(index: number): CS_InventoryItem | undefined;
     getAll(): CS_InventoryItem[];
+    remove(index: number): this;
+    removeAll(): void;
     size(): number;
 }

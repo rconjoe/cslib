@@ -13,7 +13,7 @@ export declare function CS_listCaseContents(caseItem: CS_Item | number, hideSpec
 /**
  * @see https://www.csgo.com.cn/news/gamebroad/20170911/206155.shtml
  */
-export declare function CS_unlockCase(csCaseItem: CS_Item | number): {
+export declare function CS_unlockCase(caseItem: CS_Item | number): {
     attributes: {
         seed: number | undefined;
         stattrak: number | undefined;
@@ -23,3 +23,4 @@ export declare function CS_unlockCase(csCaseItem: CS_Item | number): {
     rarity: string;
     special: boolean;
 };
+export declare function CS_validateUnlockedItem(caseItem: number | CS_Item, { id, attributes: { seed, stattrak, wear } }: ReturnType<typeof CS_unlockCase>): void;
