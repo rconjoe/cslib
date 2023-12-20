@@ -49,7 +49,7 @@ export declare const CS_STICKERABLE_ITEMS: string[];
 export declare const CS_NAMETAG_RE: RegExp;
 export declare const CS_STICKER_WEAR_FACTOR = 0.1;
 export declare const CS_MIN_STICKER_WEAR = 0;
-export declare const CS_MAX_STICKER_WEAR = 1;
+export declare const CS_MAX_STICKER_WEAR = 0.9;
 export declare const CS_SPECIAL_ITEM_IMAGE_DEFAULT = 1;
 export declare const CS_SPECIAL_ITEM_IMAGE_CUSTOM = 2;
 export declare const CS_NAMETAG_TOOL_DEF = 1200;

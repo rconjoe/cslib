@@ -24,6 +24,8 @@ export declare class CS_Inventory {
     unequip(index: number, team?: CS_Team): this;
     unlockCase(unlockedItem: ReturnType<typeof CS_unlockCase>, caseIndex: number, keyIndex?: number): this;
     renameItem(toolIndex: number, targetIndex: number, nametag?: string): this;
+    applyItemSticker(itemIndex: number, stickerItemIndex: number, stickerIndex: number): this;
+    scrapeItemSticker(itemIndex: number, stickerIndex: number): this;
     get(index: number): CS_InventoryItem | undefined;
     getAll(): CS_InventoryItem[];
     remove(index: number): this;

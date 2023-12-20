@@ -15,3 +15,6 @@ export function safe(fn) {
         }
     };
 }
+export function float(literal, fractionDigits = 2) {
+    return parseFloat(literal.toFixed(fractionDigits));
+}
