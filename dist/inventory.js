@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 import { CS_validateUnlockedItem } from "./economy-case.js";
-import { CS_Economy, CS_MAX_WEAR, CS_NAMETAG_TOOL_DEF, CS_STICKER_WEAR_FACTOR, CS_hasNametag, CS_hasStickers, CS_validateNametag, CS_validateSeed, CS_validateStatTrak, CS_validateStickers, CS_validateWear } from "./economy.js";
+import { CS_Economy, CS_MAX_STATTRAK, CS_MAX_WEAR, CS_NAMETAG_TOOL_DEF, CS_STICKER_WEAR_FACTOR, CS_hasNametag, CS_hasStickers, CS_validateNametag, CS_validateSeed, CS_validateStatTrak, CS_validateStickers, CS_validateWear } from "./economy.js";
 import { CS_TEAM_CT, CS_TEAM_T } from "./teams.js";
 import { float } from "./util.js";
 export const CS_INVENTORY_EQUIPPABLE_ITEMS = [
@@ -224,7 +224,9 @@ export class CS_Inventory {
         if (!inventoryItem || inventoryItem.stattrak === undefined) {
             throw new Error("invalid inventory item");
         }
-        inventoryItem.stattrak++;
+        if (inventoryItem.stattrak < CS_MAX_STATTRAK) {
+            inventoryItem.stattrak++;
+        }
         return this;
     }
     get(index) {
