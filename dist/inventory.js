@@ -230,6 +230,9 @@ export class CS_Inventory {
         return this;
     }
     swapItemsStatTrak(toolIndex, fromIndex, toIndex) {
+        if (fromIndex === toIndex) {
+            throw new Error("indexes must be different");
+        }
         const fromInventoryItem = this.items[fromIndex];
         const toInventoryItem = this.items[toIndex];
         if (!this.items[toolIndex] ||
