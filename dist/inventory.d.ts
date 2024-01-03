@@ -26,6 +26,7 @@ export declare class CS_Inventory {
     renameItem(toolIndex: number, targetIndex: number, nametag?: string): this;
     applyItemSticker(itemIndex: number, stickerItemIndex: number, stickerIndex: number): this;
     scrapeItemSticker(itemIndex: number, stickerIndex: number): this;
+    incrementItemStatTrak(itemIndex: number): this;
     get(index: number): CS_InventoryItem | undefined;
     getAll(): CS_InventoryItem[];
     remove(index: number): this;

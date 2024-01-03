@@ -219,6 +219,14 @@ export class CS_Inventory {
         inventoryItem.stickerswear = stickersWear;
         return this;
     }
+    incrementItemStatTrak(itemIndex) {
+        const inventoryItem = this.items[itemIndex];
+        if (!inventoryItem || inventoryItem.stattrak === undefined) {
+            throw new Error("invalid inventory item");
+        }
+        inventoryItem.stattrak++;
+        return this;
+    }
     get(index) {
         return this.items[index];
     }
