@@ -27,6 +27,7 @@ export declare class CS_Inventory {
     applyItemSticker(itemIndex: number, stickerItemIndex: number, stickerIndex: number): this;
     scrapeItemSticker(itemIndex: number, stickerIndex: number): this;
     incrementItemStatTrak(itemIndex: number): this;
+    swapItemsStatTrak(toolIndex: number, fromIndex: number, toIndex: number): this;
     get(index: number): CS_InventoryItem | undefined;
     getAll(): CS_InventoryItem[];
     remove(index: number): this;

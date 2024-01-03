@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 import { CS_validateUnlockedItem } from "./economy-case.js";
-import { CS_Economy, CS_MAX_STATTRAK, CS_MAX_WEAR, CS_NAMETAG_TOOL_DEF, CS_STICKER_WEAR_FACTOR, CS_hasNametag, CS_hasStickers, CS_validateNametag, CS_validateSeed, CS_validateStatTrak, CS_validateStickers, CS_validateWear } from "./economy.js";
+import { CS_Economy, CS_MAX_STATTRAK, CS_MAX_WEAR, CS_NAMETAG_TOOL_DEF, CS_STICKER_WEAR_FACTOR, CS_SWAP_STATTRAK_TOOL_DEF, CS_hasNametag, CS_hasStickers, CS_validateNametag, CS_validateSeed, CS_validateStatTrak, CS_validateStickers, CS_validateWear } from "./economy.js";
 import { CS_TEAM_CT, CS_TEAM_T } from "./teams.js";
 import { float } from "./util.js";
 export const CS_INVENTORY_EQUIPPABLE_ITEMS = [
@@ -227,6 +227,34 @@ export class CS_Inventory {
         if (inventoryItem.stattrak < CS_MAX_STATTRAK) {
             inventoryItem.stattrak++;
         }
+        return this;
+    }
+    swapItemsStatTrak(toolIndex, fromIndex, toIndex) {
+        const fromInventoryItem = this.items[fromIndex];
+        const toInventoryItem = this.items[toIndex];
+        if (!this.items[toolIndex] ||
+            !fromInventoryItem ||
+            !toInventoryItem ||
+            fromInventoryItem.stattrak === undefined ||
+            toInventoryItem.stattrak === undefined) {
+            throw new Error("invalid inventory items");
+        }
+        const toolItem = CS_Economy.getById(this.items[toolIndex].id);
+        if (toolItem.def !== CS_SWAP_STATTRAK_TOOL_DEF) {
+            throw new Error("tool must be stattrak swap tool");
+        }
+        const fromItem = CS_Economy.getById(fromInventoryItem.id);
+        const toItem = CS_Economy.getById(toInventoryItem.id);
+        if (fromItem.type !== toItem.type) {
+            throw new Error("items must be of the same type");
+        }
+        if (fromItem.type !== "musickit" && fromItem.def !== toItem.def) {
+            throw new Error("items must be of the same type");
+        }
+        const fromStattrak = fromInventoryItem.stattrak;
+        fromInventoryItem.stattrak = toInventoryItem.stattrak;
+        toInventoryItem.stattrak = fromStattrak;
+        this.items.splice(toolIndex, 1);
         return this;
     }
     get(index) {

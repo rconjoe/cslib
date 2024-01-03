@@ -34,6 +34,7 @@ export const CS_MAX_STICKER_WEAR = 0.9;
 export const CS_SPECIAL_ITEM_IMAGE_DEFAULT = 1;
 export const CS_SPECIAL_ITEM_IMAGE_CUSTOM = 2;
 export const CS_NAMETAG_TOOL_DEF = 1200;
+export const CS_SWAP_STATTRAK_TOOL_DEF = 1324;
 function filterItems(predicate) {
     return function filter(item) {
         return (compare(predicate.type, item.type) &&
