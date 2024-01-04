@@ -5,4 +5,5 @@ export * from "./items.js";
 export * from "./keyvalues.js";
 export * from "./maps.js";
 export * from "./teams.js";
+export * from "./translations/index.js";
 export * from "./veto.js";
