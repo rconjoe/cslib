@@ -261,7 +261,18 @@ export class CS_Inventory {
         return this;
     }
     get(index) {
+        if (!this.items[index]) {
+            throw new Error("invalid inventory item");
+        }
         return this.items[index];
+    }
+    getItem(index) {
+        return CS_Economy.getById(this.get(index).id);
+    }
+    getExtended(index) {
+        const inventoryItem = this.get(index);
+        const item = CS_Economy.getById(inventoryItem.id);
+        return { ...inventoryItem, item };
     }
     getAll() {
         return this.items;

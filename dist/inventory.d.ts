@@ -28,7 +28,21 @@ export declare class CS_Inventory {
     scrapeItemSticker(itemIndex: number, stickerIndex: number): this;
     incrementItemStatTrak(itemIndex: number): this;
     swapItemsStatTrak(toolIndex: number, fromIndex: number, toIndex: number): this;
-    get(index: number): CS_InventoryItem | undefined;
+    get(index: number): CS_InventoryItem;
+    getItem(index: number): import("./economy.js").CS_Item;
+    getExtended(index: number): {
+        item: import("./economy.js").CS_Item;
+        equipped?: boolean | undefined;
+        equippedCT?: boolean | undefined;
+        equippedT?: boolean | undefined;
+        id: number;
+        nametag?: string | undefined;
+        seed?: number | undefined;
+        stattrak?: number | undefined;
+        stickers?: (number | null)[] | undefined;
+        stickerswear?: (number | null)[] | undefined;
+        wear?: number | undefined;
+    };
     getAll(): CS_InventoryItem[];
     remove(index: number): this;
     removeAll(): void;
